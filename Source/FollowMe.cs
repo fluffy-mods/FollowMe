@@ -1,20 +1,34 @@
 ﻿using System;
 using System.Linq;
-using CommunityCoreLibrary;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace FollowMe
 {
-    public class Injector : SpecialInjector
+    // TODO: Move back to CCL SpecialInjector
+    //public class Injector : SpecialInjector
+    public class Bootstrap : ITab
     {
-        public override void Inject()
+        public Bootstrap()
         {
-            // create a game object.
-            GameObject gameObject = new GameObject(Controller.GameObjectName);
-            MonoBehaviour.DontDestroyOnLoad( gameObject );
-            gameObject.AddComponent<Controller>();
+            Log.Message( "I AM HERE:\n" + System.Environment.StackTrace );
+
+            LongEventHandler.ExecuteWhenFinished( delegate
+            {
+                Log.Message( "I AM NOW HERE:\n" + System.Environment.StackTrace );
+
+                // create a game object.
+                GameObject gameObject = new GameObject( Controller.GameObjectName );
+                MonoBehaviour.DontDestroyOnLoad( gameObject );
+                gameObject.AddComponent<Controller>();
+
+            } );
+        }
+
+        protected override void FillTab()
+        {
+            // empty, but required implementation.
         }
     }
 
@@ -130,7 +144,7 @@ namespace FollowMe
                     // try follow whatever thing is selected
                     if ( CurrentlyFollowing && followedThing != null )
                     {
-                        if ( !followedThing.SpawnedInWorld && followedThing.holder != null )
+                        if ( !followedThing.Spawned && followedThing.holder != null )
                         {
                             // thing is in some sort of container
                             IThingContainerOwner holder = followedThing.holder.owner;
@@ -148,7 +162,7 @@ namespace FollowMe
                                 Find.CameraMap.JumpTo( holder.GetPosition() );
                             }
                         }
-                        else if ( followedThing.SpawnedInWorld )
+                        else if ( followedThing.Spawned )
                         {
                             // thing is spawned in world, just use the things drawPos
                             Find.CameraMap.JumpTo( followedThing.DrawPos );

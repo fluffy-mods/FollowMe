@@ -7,7 +7,7 @@
 
     <url>https://ludeon.com/forums/index.php?topic=16120.0</url>
 
-    <targetVersion>RimWorld Alpha 12d</targetVersion>
+    <targetVersion>RimWorld Alpha 13</targetVersion>
 
     <description>Adds a keybinding (default: Scroll Lock) to lock the camera to a pawn, animal or item.</description>
 
