@@ -3,7 +3,7 @@
     <ModHelperDef>
         <defName>Fluffy_FollowMe</defName>
         <ModName>Follow Me</ModName>
-        <version>0.12.4</version>
+        <minCCLVersion>0.13.0</minCCLVersion>
         <SpecialInjectors>
             <li>FollowMe.Injector</li>
         </SpecialInjectors>

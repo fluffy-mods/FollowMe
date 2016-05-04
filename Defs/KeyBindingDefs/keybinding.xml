@@ -11,7 +11,7 @@
   <KeyBindingDef ParentName="GameKeyBinding">
     <defName>FollowSelected</defName>
     <label>follow</label>
-    <defaultKeyCodeA>ScrollLock</defaultKeyCodeA>
+    <defaultKeyCodeA>Home</defaultKeyCodeA>
   </KeyBindingDef>
 
 </KeyBindingDefs>

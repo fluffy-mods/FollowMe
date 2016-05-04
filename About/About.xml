@@ -9,6 +9,6 @@
 
     <targetVersion>RimWorld Alpha 13</targetVersion>
 
-    <description>Adds a keybinding (default: Scroll Lock) to lock the camera to a pawn, animal or item.</description>
+    <description>Adds a keybinding (default: Home) to lock the camera to a pawn, animal or item.</description>
 
 </ModMetaData>
