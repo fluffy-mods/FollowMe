@@ -1,14 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-
     <name>Follow Me!</name>
-
     <author>Fluffy</author>
-
     <url>https://ludeon.com/forums/index.php?topic=16120.0</url>
-
-    <targetVersion>RimWorld Alpha 13</targetVersion>
-
+    <targetVersion>0.14.1220</targetVersion>
     <description>Adds a keybinding (default: Home) to lock the camera to a pawn, animal or item.</description>
-
 </ModMetaData>

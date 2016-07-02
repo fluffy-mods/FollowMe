@@ -1,5 +1,4 @@
-﻿using CommunityCoreLibrary;
-using RimWorld;
+﻿using RimWorld;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -7,61 +6,62 @@ using Verse;
 
 namespace FollowMe
 {
-    public class FollowMe : MonoBehaviour
+    public class FollowMe : MapComponent
     {
         #region Fields
 
-        public static bool CurrentlyFollowing;
-        public static Thing followedThing;
-        public static string GameObjectName = "FollowMeController";
+        private static bool _currentlyFollowing;
+        private static Thing _followedThing;
+        private bool _enabled = true;
 
-        private KeyBindingDef[] followBreakingKeyBindingDefs = {
+        private KeyBindingDef[] _followBreakingKeyBindingDefs = {
             KeyBindingDefOf.MapDollyDown,
             KeyBindingDefOf.MapDollyUp,
             KeyBindingDefOf.MapDollyRight,
             KeyBindingDefOf.MapDollyLeft
         };
 
-        private KeyBindingDef FollowKey = KeyBindingDef.Named( "FollowSelected" );
+        private KeyBindingDef _followKey = KeyBindingDef.Named( "FollowSelected" );
 
         #endregion Fields
 
         #region Properties
 
-        public static string followedLabel
+        public static string FollowedLabel
         {
             get
             {
-                if ( followedThing == null )
+                if ( _followedThing == null )
                 {
                     return String.Empty;
                 }
-                Pawn pawn = followedThing as Pawn;
+                Pawn pawn = _followedThing as Pawn;
                 if ( pawn != null )
                 {
                     return pawn.NameStringShort;
                 }
-                return followedThing.LabelCap;
+                return _followedThing.LabelCap;
             }
         }
 
         #endregion Properties
 
-        #region Methods
-
         // Called every frame when the mod is enabled.
-        public virtual void Update()
+        public override void MapComponentUpdate()
         {
+            if ( !_enabled )
+                return;
+
             try
             {
                 // shut it off if we're manually scrolling (keys)
-                if ( CurrentlyFollowing )
+                if ( _currentlyFollowing )
                 {
-                    if ( followBreakingKeyBindingDefs.Any( key => key.IsDown ) )
+                    if ( _followBreakingKeyBindingDefs.Any( key => key.IsDown ) )
                     {
-                        Messages.Message( "FollowMe.Cancel".Translate( followedLabel ), MessageSound.Negative );
-                        followedThing = null;
-                        CurrentlyFollowing = false;
+                        Messages.Message( "FollowMe.Cancel".Translate( FollowedLabel ), MessageSound.Negative );
+                        _followedThing = null;
+                        _currentlyFollowing = false;
                     }
                 }
 
@@ -71,11 +71,15 @@ namespace FollowMe
                 Thing newFollowedThing = Find.Selector.SingleSelectedObject as Thing;
 
                 // start/stop following thing on key press
-                if ( FollowKey.KeyDownEvent )
+                if ( _followKey.KeyDownEvent )
                 {
+
+#if DEBUG
                     Log.Message( "FollowMe :: Follow key pressed" );
+#endif
+
                     // nothing to cancel or start following
-                    if ( !CurrentlyFollowing && newFollowedThing == null )
+                    if ( !_currentlyFollowing && newFollowedThing == null )
                     {
                         if ( Find.Selector.NumSelected > 1 )
                         {
@@ -92,54 +96,54 @@ namespace FollowMe
                     }
 
                     // cancel current follow
-                    else if ( CurrentlyFollowing && newFollowedThing == null || newFollowedThing == followedThing )
+                    else if ( _currentlyFollowing && newFollowedThing == null || newFollowedThing == _followedThing )
                     {
-                        Messages.Message( "FollowMe.Cancel".Translate( followedLabel ), MessageSound.Negative );
-                        followedThing = null;
-                        CurrentlyFollowing = false;
+                        Messages.Message( "FollowMe.Cancel".Translate( FollowedLabel ), MessageSound.Negative );
+                        _followedThing = null;
+                        _currentlyFollowing = false;
                     }
 
                     // follow new thing
                     else if ( newFollowedThing != null )
                     {
-                        followedThing = newFollowedThing;
-                        CurrentlyFollowing = true;
-                        Messages.Message( "FollowMe.Follow".Translate( followedLabel ), MessageSound.Negative );
+                        _followedThing = newFollowedThing;
+                        _currentlyFollowing = true;
+                        Messages.Message( "FollowMe.Follow".Translate( FollowedLabel ), MessageSound.Negative );
                     }
                 }
 
                 // try follow whatever thing is selected
-                if ( CurrentlyFollowing && followedThing != null )
+                if ( _currentlyFollowing && _followedThing != null )
                 {
-                    if ( !followedThing.Spawned && followedThing.holder != null )
+                    if ( !_followedThing.Spawned && _followedThing.holder != null )
                     {
                         // thing is in some sort of container
-                        IThingContainerOwner holder = followedThing.holder.owner;
+                        IThingContainerOwner holder = _followedThing.holder.owner;
 
                         // if holder is a pawn's carrytracker we can use the smoother positions of the pawns's drawposition
                         Pawn_CarryTracker tracker = holder as Pawn_CarryTracker;
                         if ( tracker != null )
                         {
-                            Find.CameraMap.JumpTo( tracker.pawn.DrawPos );
+                            Find.CameraDriver.JumpTo( tracker.pawn.DrawPos );
                         }
 
                         // otherwise the holder int location will have to do
                         else
                         {
-                            Find.CameraMap.JumpTo( holder.GetPosition() );
+                            Find.CameraDriver.JumpTo( holder.GetPosition() );
                         }
                     }
-                    else if ( followedThing.Spawned )
+                    else if ( _followedThing.Spawned )
                     {
                         // thing is spawned in world, just use the things drawPos
-                        Find.CameraMap.JumpTo( followedThing.DrawPos );
+                        Find.CameraDriver.JumpTo( _followedThing.DrawPos );
                     }
                     else
                     {
                         // we've lost track of whatever it was we were following
-                        Log.Message( "FollowMe.Cancel".Translate( followedLabel ) );
-                        CurrentlyFollowing = false;
-                        followedThing = null;
+                        Log.Message( "FollowMe.Cancel".Translate( FollowedLabel ) );
+                        _currentlyFollowing = false;
+                        _followedThing = null;
                     }
                 }
             }
@@ -147,32 +151,9 @@ namespace FollowMe
             // catch exception to avoid error spam
             catch ( Exception e )
             {
-                enabled = false;
+                _enabled = false;
                 Log.Error( e.ToString() );
             }
         }
-
-        #endregion Methods
-    }
-
-    public class Injector : SpecialInjector
-    {
-        #region Methods
-
-        public override bool Inject()
-        {
-            LongEventHandler.ExecuteWhenFinished( delegate
-            {
-                // create a game object.
-                GameObject gameObject = new GameObject( FollowMe.GameObjectName );
-                MonoBehaviour.DontDestroyOnLoad( gameObject );
-                gameObject.AddComponent<FollowMe>();
-                Log.Message( "FollowMe :: GameObject initialized." );
-            } );
-
-            return true;
-        }
-
-        #endregion Methods
     }
 }
