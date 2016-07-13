@@ -1,29 +1,13 @@
 ﻿using RimWorld;
 using System;
 using System.Linq;
-using System.Reflection;
 using Verse;
-using CommunityCoreLibrary;
+using UnityEngine;
 
 namespace FollowMe
 {
     public class FollowMe : MapComponent
     {
-        public FollowMe()
-        {
-            // detour colonist bar click handler
-            MethodInfo SourceMethod = typeof( ColonistBar ).GetMethod( "HandleColonistClicks",
-                                                                       BindingFlags.NonPublic | BindingFlags.Instance );
-            MethodInfo DestinationMethod = typeof( ColonistBarDetours ).GetMethod( "HandleColonistClicks",
-                                                                       BindingFlags.NonPublic | BindingFlags.Instance );
-
-            if ( Detours.TryDetourFromTo( SourceMethod, DestinationMethod ) )
-                Log.Message( "FollowMe :: Succesfully injected right-click follow into Colonist Bar." );
-            else
-                Log.Error( "FollowMe :: Failed to inject right-click follow into Colonist Bar." );
-
-        }
-
         #region Fields
 
         private static bool _currentlyFollowing;
@@ -61,6 +45,26 @@ namespace FollowMe
         }
 
         #endregion Properties
+
+        public override void MapComponentOnGUI()
+        {
+            if ( Event.current.type == EventType.mouseDown &&
+                 Event.current.button == 1 )
+            {
+                // get mouseposition, invert y axis (because UI has origing in top left, Input in bottom left).
+                var pos = Input.mousePosition;
+                pos.y = Screen.height - pos.y;
+                Thing thing = Find.ColonistBar.ColonistAt( pos );
+                if ( thing != null )
+                {
+                    // start following
+                    TryStartFollow( thing );
+
+                    // use event so it doesn't bubble through
+                    Event.current.Use();
+                }
+            }
+        }
 
         // Called every frame when the mod is enabled.
         public override void MapComponentUpdate()
