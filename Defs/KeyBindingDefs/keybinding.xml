@@ -3,7 +3,6 @@
 <KeyBindingDefs>
 
   <!-- In-game camera -->
-  
   <KeyBindingDef Name="GameKeyBinding" Abstract="true">
     <category>Game</category>
   </KeyBindingDef>
