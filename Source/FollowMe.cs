@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Verse;
 using UnityEngine;
+using System.Reflection;
 
 namespace FollowMe
 {
@@ -13,6 +14,7 @@ namespace FollowMe
         private static bool _currentlyFollowing;
         private static Thing _followedThing;
         private bool _enabled = true;
+        private static bool _cameraHasJumpedAtLeastOnce = false;
 
         private KeyBindingDef[] _followBreakingKeyBindingDefs = {
             KeyBindingDefOf.MapDollyDown,
@@ -98,28 +100,62 @@ namespace FollowMe
             if ( !_currentlyFollowing || _followedThing == null )
                 return;
 
-            if ( !_followedThing.Spawned && _followedThing.holder != null )
+            Vector3 newCameraPosition;
+            if (!_followedThing.Spawned && _followedThing.holder != null)
             {
                 // thing is in some sort of container
                 IThingContainerOwner holder = _followedThing.holder.owner;
 
                 // if holder is a pawn's carrytracker we can use the smoother positions of the pawns's drawposition
                 Pawn_CarryTracker tracker = holder as Pawn_CarryTracker;
-                if ( tracker != null )
-                    Find.CameraDriver.JumpTo( tracker.pawn.DrawPos );
+                if (tracker != null)
+                    newCameraPosition = tracker.pawn.DrawPos;
 
                 // otherwise the holder int location will have to do
                 else
-                    Find.CameraDriver.JumpTo( holder.GetPosition() );
+                    newCameraPosition = holder.GetPosition().ToVector3Shifted();
             }
 
             // thing is spawned in world, just use the things drawPos
-            else if ( _followedThing.Spawned )
-                Find.CameraDriver.JumpTo( _followedThing.DrawPos );
+            else if (_followedThing.Spawned)
+                newCameraPosition = _followedThing.DrawPos;
 
             // we've lost track of whatever it was we were following
             else
+            {
                 StopFollow();
+                return;
+            }
+
+            // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
+            // before starting to compare positions
+            if (_cameraHasJumpedAtLeastOnce)
+            {
+                // the actual location of the camera right now
+                var currentCameraPosition = Find.CameraDriver.MapPosition;
+
+                // the location the camera has been requested to be at
+                var requestedCameraPosition = GetRequestedCameraPosition().ToIntVec3();
+
+                // these normally stay in sync while following is active, since we were the last to request where the camera should go.
+                // If they get out of sync, it's because the camera has been asked to jump to somewhere else, and we should stop
+                // following our thing.
+                if (Math.Abs(currentCameraPosition.x - requestedCameraPosition.x) > 1 || Math.Abs(currentCameraPosition.z - requestedCameraPosition.z) > 1 )
+                {
+                    StopFollow();
+                    return;
+                }
+            }
+
+            Find.CameraDriver.JumpTo(newCameraPosition);
+            _cameraHasJumpedAtLeastOnce = true;
+        }
+
+        private static Vector3 GetRequestedCameraPosition()
+        {
+            var cameraDriver = Find.CameraDriver;
+            var rootPosField = cameraDriver.GetType().GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
+            return (Vector3)rootPosField.GetValue(cameraDriver);
         }
 
         public static void TryStartFollow( Thing thing )
@@ -157,6 +193,7 @@ namespace FollowMe
             Messages.Message( "FollowMe.Cancel".Translate( FollowedLabel ), MessageSound.Negative );
             _followedThing = null;
             _currentlyFollowing = false;
+            _cameraHasJumpedAtLeastOnce = false;
         }
 
         private void CheckFollowBreakingKeys()
