@@ -74,8 +74,8 @@ namespace FollowMe
 
             try
             {
-                // TODO: figure out how to shut it off when scrolling by mouse?
                 CheckFollowBreakingKeys();
+                CheckFollowCameraDolly();
                 
                 // start/stop following thing on key press
                 if ( _followKey.KeyDownEvent )
@@ -165,6 +165,29 @@ namespace FollowMe
                 return;
             if ( _followBreakingKeyBindingDefs.Any( key => key.IsDown ) )
                 StopFollow();
+        }
+
+        private void CheckFollowCameraDolly()
+        {
+            if (!_currentlyFollowing)
+                return;
+
+            var mousePosition = Input.mousePosition;
+            var screenCorners = new[]
+            {
+                new Rect(0f, 0f, 200f, 200f),
+                new Rect(Screen.width - 250, 0f, 255f, 255f),
+                new Rect(0f, Screen.height - 250, 225f, 255f),
+                new Rect(Screen.width - 250, Screen.height - 250, 255f, 255f)
+            };
+            if (screenCorners.Any(e => e.Contains(mousePosition)))
+                return;
+
+            if (mousePosition.x < 20f || mousePosition.x > Screen.width - 20
+                || mousePosition.y > Screen.height - 20f || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
+            {
+                StopFollow();
+            }
         }
     }
 }
