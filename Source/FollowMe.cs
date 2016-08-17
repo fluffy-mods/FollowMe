@@ -151,11 +151,11 @@ namespace FollowMe
             _cameraHasJumpedAtLeastOnce = true;
         }
 
+        private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
         private static Vector3 GetRequestedCameraPosition()
         {
             var cameraDriver = Find.CameraDriver;
-            var rootPosField = cameraDriver.GetType().GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
-            return (Vector3)rootPosField.GetValue(cameraDriver);
+            return (Vector3)_cameraDriverRootPosField.GetValue(cameraDriver);
         }
 
         public static void TryStartFollow( Thing thing )
