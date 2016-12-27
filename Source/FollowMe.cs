@@ -1,178 +1,230 @@
-﻿using CommunityCoreLibrary;
-using RimWorld;
+﻿using RimWorld;
 using System;
 using System.Linq;
-using UnityEngine;
 using Verse;
+using UnityEngine;
+using System.Reflection;
 
 namespace FollowMe
 {
-    public class FollowMe : MonoBehaviour
+    public class FollowMe : MapComponent
     {
         #region Fields
 
-        public static bool CurrentlyFollowing;
-        public static Thing followedThing;
-        public static string GameObjectName = "FollowMeController";
+        private static bool _currentlyFollowing;
+        private static Thing _followedThing;
+        private bool _enabled = true;
+        private static bool _cameraHasJumpedAtLeastOnce = false;
 
-        private KeyBindingDef[] followBreakingKeyBindingDefs = {
+        private KeyBindingDef[] _followBreakingKeyBindingDefs = {
             KeyBindingDefOf.MapDollyDown,
             KeyBindingDefOf.MapDollyUp,
             KeyBindingDefOf.MapDollyRight,
             KeyBindingDefOf.MapDollyLeft
         };
 
-        private KeyBindingDef FollowKey = KeyBindingDef.Named( "FollowSelected" );
+        private KeyBindingDef _followKey = KeyBindingDef.Named( "FollowSelected" );
 
         #endregion Fields
 
         #region Properties
 
-        public static string followedLabel
+        public static string FollowedLabel
         {
             get
             {
-                if ( followedThing == null )
+                if ( _followedThing == null )
                 {
                     return String.Empty;
                 }
-                Pawn pawn = followedThing as Pawn;
+                Pawn pawn = _followedThing as Pawn;
                 if ( pawn != null )
                 {
                     return pawn.NameStringShort;
                 }
-                return followedThing.LabelCap;
+                return _followedThing.LabelCap;
             }
         }
 
         #endregion Properties
 
-        #region Methods
+        public override void MapComponentOnGUI()
+        {
+            if ( Event.current.type == EventType.mouseDown &&
+                 Event.current.button == 1 )
+            {
+                // get mouseposition, invert y axis (because UI has origing in top left, Input in bottom left).
+                var pos = Input.mousePosition;
+                pos.y = Screen.height - pos.y;
+                Thing thing = Find.ColonistBar.ColonistAt( pos );
+                if ( thing != null )
+                {
+                    // start following
+                    TryStartFollow( thing );
+
+                    // use event so it doesn't bubble through
+                    Event.current.Use();
+                }
+            }
+        }
 
         // Called every frame when the mod is enabled.
-        public virtual void Update()
+        public override void MapComponentUpdate()
         {
+            if ( !_enabled )
+                return;
+
             try
             {
-                // shut it off if we're manually scrolling (keys)
-                if ( CurrentlyFollowing )
-                {
-                    if ( followBreakingKeyBindingDefs.Any( key => key.IsDown ) )
-                    {
-                        Messages.Message( "FollowMe.Cancel".Translate( followedLabel ), MessageSound.Negative );
-                        followedThing = null;
-                        CurrentlyFollowing = false;
-                    }
-                }
-
-                // TODO: figure out how to shut it off when scrolling by mouse?
-
-                // get selection
-                Thing newFollowedThing = Find.Selector.SingleSelectedObject as Thing;
-
+                CheckFollowBreakingKeys();
+                CheckFollowCameraDolly();
+                
                 // start/stop following thing on key press
-                if ( FollowKey.KeyDownEvent )
-                {
-                    Log.Message( "FollowMe :: Follow key pressed" );
-                    // nothing to cancel or start following
-                    if ( !CurrentlyFollowing && newFollowedThing == null )
-                    {
-                        if ( Find.Selector.NumSelected > 1 )
-                        {
-                            Messages.Message( "FollowMe.RejectMultiple".Translate(), MessageSound.RejectInput );
-                        }
-                        else if ( Find.Selector.NumSelected == 0 )
-                        {
-                            Messages.Message( "FollowMe.RejectNoSelection".Translate(), MessageSound.RejectInput );
-                        }
-                        else
-                        {
-                            Messages.Message( "FollowMe.RejectNotAThing".Translate(), MessageSound.RejectInput );
-                        }
-                    }
+                if ( _followKey.KeyDownEvent )
+                    TryStartFollow( Find.Selector.SingleSelectedObject as Thing );
 
-                    // cancel current follow
-                    else if ( CurrentlyFollowing && newFollowedThing == null || newFollowedThing == followedThing )
-                    {
-                        Messages.Message( "FollowMe.Cancel".Translate( followedLabel ), MessageSound.Negative );
-                        followedThing = null;
-                        CurrentlyFollowing = false;
-                    }
-
-                    // follow new thing
-                    else if ( newFollowedThing != null )
-                    {
-                        followedThing = newFollowedThing;
-                        CurrentlyFollowing = true;
-                        Messages.Message( "FollowMe.Follow".Translate( followedLabel ), MessageSound.Negative );
-                    }
-                }
-
-                // try follow whatever thing is selected
-                if ( CurrentlyFollowing && followedThing != null )
-                {
-                    if ( !followedThing.Spawned && followedThing.holder != null )
-                    {
-                        // thing is in some sort of container
-                        IThingContainerOwner holder = followedThing.holder.owner;
-
-                        // if holder is a pawn's carrytracker we can use the smoother positions of the pawns's drawposition
-                        Pawn_CarryTracker tracker = holder as Pawn_CarryTracker;
-                        if ( tracker != null )
-                        {
-                            Find.CameraMap.JumpTo( tracker.pawn.DrawPos );
-                        }
-
-                        // otherwise the holder int location will have to do
-                        else
-                        {
-                            Find.CameraMap.JumpTo( holder.GetPosition() );
-                        }
-                    }
-                    else if ( followedThing.Spawned )
-                    {
-                        // thing is spawned in world, just use the things drawPos
-                        Find.CameraMap.JumpTo( followedThing.DrawPos );
-                    }
-                    else
-                    {
-                        // we've lost track of whatever it was we were following
-                        Log.Message( "FollowMe.Cancel".Translate( followedLabel ) );
-                        CurrentlyFollowing = false;
-                        followedThing = null;
-                    }
-                }
+                // move camera
+                Follow();
             }
 
             // catch exception to avoid error spam
             catch ( Exception e )
             {
-                enabled = false;
+                _enabled = false;
                 Log.Error( e.ToString() );
             }
         }
 
-        #endregion Methods
-    }
-
-    public class Injector : SpecialInjector
-    {
-        #region Methods
-
-        public override bool Inject()
+        private static void Follow()
         {
-            LongEventHandler.ExecuteWhenFinished( delegate
-            {
-                // create a game object.
-                GameObject gameObject = new GameObject( FollowMe.GameObjectName );
-                MonoBehaviour.DontDestroyOnLoad( gameObject );
-                gameObject.AddComponent<FollowMe>();
-                Log.Message( "FollowMe :: GameObject initialized." );
-            } );
+            if ( !_currentlyFollowing || _followedThing == null )
+                return;
 
-            return true;
+            Vector3 newCameraPosition;
+            if (!_followedThing.Spawned && _followedThing.holder != null)
+            {
+                // thing is in some sort of container
+                IThingContainerOwner holder = _followedThing.holder.owner;
+
+                // if holder is a pawn's carrytracker we can use the smoother positions of the pawns's drawposition
+                Pawn_CarryTracker tracker = holder as Pawn_CarryTracker;
+                if (tracker != null)
+                    newCameraPosition = tracker.pawn.DrawPos;
+
+                // otherwise the holder int location will have to do
+                else
+                    newCameraPosition = holder.GetPosition().ToVector3Shifted();
+            }
+
+            // thing is spawned in world, just use the things drawPos
+            else if (_followedThing.Spawned)
+                newCameraPosition = _followedThing.DrawPos;
+
+            // we've lost track of whatever it was we were following
+            else
+            {
+                StopFollow();
+                return;
+            }
+
+            // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
+            // before starting to compare positions
+            if (_cameraHasJumpedAtLeastOnce)
+            {
+                // the actual location of the camera right now
+                var currentCameraPosition = Find.CameraDriver.MapPosition;
+
+                // the location the camera has been requested to be at
+                var requestedCameraPosition = GetRequestedCameraPosition().ToIntVec3();
+
+                // these normally stay in sync while following is active, since we were the last to request where the camera should go.
+                // If they get out of sync, it's because the camera has been asked to jump to somewhere else, and we should stop
+                // following our thing.
+                if (Math.Abs(currentCameraPosition.x - requestedCameraPosition.x) > 1 || Math.Abs(currentCameraPosition.z - requestedCameraPosition.z) > 1 )
+                {
+                    StopFollow();
+                    return;
+                }
+            }
+
+            Find.CameraDriver.JumpTo(newCameraPosition);
+            _cameraHasJumpedAtLeastOnce = true;
         }
 
-        #endregion Methods
+        private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static Vector3 GetRequestedCameraPosition()
+        {
+            var cameraDriver = Find.CameraDriver;
+            return (Vector3)_cameraDriverRootPosField.GetValue(cameraDriver);
+        }
+
+        public static void TryStartFollow( Thing thing )
+        { 
+            if ( !_currentlyFollowing && thing == null )
+            {
+                if ( Find.Selector.NumSelected > 1 )
+                    Messages.Message( "FollowMe.RejectMultiple".Translate(), MessageSound.RejectInput );
+
+                else if ( Find.Selector.NumSelected == 0 )
+                    Messages.Message( "FollowMe.RejectNoSelection".Translate(), MessageSound.RejectInput );
+
+                else
+                    Messages.Message( "FollowMe.RejectNotAThing".Translate(), MessageSound.RejectInput );
+            }
+
+            // cancel current follow (toggle or thing == null)
+            else if ( _currentlyFollowing && thing == null || thing == _followedThing )
+                StopFollow();
+
+            // follow new thing
+            else if ( thing != null )
+                StartFollow( thing );
+        }
+
+        private static void StartFollow( Thing thing )
+        {
+            _followedThing = thing;
+            _currentlyFollowing = true;
+            Messages.Message( "FollowMe.Follow".Translate( FollowedLabel ), MessageSound.Negative );
+        }
+
+        public static void StopFollow()
+        {
+            Messages.Message( "FollowMe.Cancel".Translate( FollowedLabel ), MessageSound.Negative );
+            _followedThing = null;
+            _currentlyFollowing = false;
+            _cameraHasJumpedAtLeastOnce = false;
+        }
+
+        private void CheckFollowBreakingKeys()
+        {
+            if ( !_currentlyFollowing )
+                return;
+            if ( _followBreakingKeyBindingDefs.Any( key => key.IsDown ) )
+                StopFollow();
+        }
+
+        private void CheckFollowCameraDolly()
+        {
+            if (!_currentlyFollowing)
+                return;
+
+            var mousePosition = Input.mousePosition;
+            var screenCorners = new[]
+            {
+                new Rect(0f, 0f, 200f, 200f),
+                new Rect(Screen.width - 250, 0f, 255f, 255f),
+                new Rect(0f, Screen.height - 250, 225f, 255f),
+                new Rect(Screen.width - 250, Screen.height - 250, 255f, 255f)
+            };
+            if (screenCorners.Any(e => e.Contains(mousePosition)))
+                return;
+
+            if (mousePosition.x < 20f || mousePosition.x > Screen.width - 20
+                || mousePosition.y > Screen.height - 20f || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
+            {
+                StopFollow();
+            }
+        }
     }
 }
