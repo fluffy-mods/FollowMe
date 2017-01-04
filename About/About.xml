@@ -1,20 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ModMetaData>
-    <name>Follow Me!</name>
-    <author>Fluffy</author>
-    <url>https://ludeon.com/forums/index.php?topic=16120.0</url>
-    <targetVersion>0.14.1223</targetVersion>
-    <description>Follow Me!
-    Description
-    ====
-    Gives the camera tracking capabilities. Press the 'Home' key (default, can be changed with in-game keybinding settings) while any colonist, enemy, animal or item is selected, and the camera will follow them (including furniture and plants - but they tend to not move much). Alternatively, you can right click colonists in the Colonist Bar on top of the screen to toggle following.
+  <name>Follow Me</name>
+  <author>Fluffy</author>
+  <url>https://ludeon.com/forums/index.php?topic=16120.0</url>
+  <targetVersion>0.16.1393</targetVersion>
+  <description>Gives the camera tracking capabilities. 
 
-    Notes
-    ====
-    To keep the mod simple, camera follow is only broken when the camera is moved manually with the keyboard, or the follow key is pressed again. Camera movement by moving the cursor close to the map's edge is not registered. If there's enough call for this functionality, I might add it in at some point.
+&lt;size=24&gt;Features&lt;/size&gt;
+Press the ‘Home’ key (default, can be changed with in-game keybinding settings) while any colonist, enemy, animal or item is selected, and the camera will follow them (including furniture and plants - but they tend to not move much). Alternatively, you can right click colonists in the Colonist Bar on top of the screen to toggle following.
 
-    Contributors
-    ====
-    Raccoon - German translation
-    </description>
+&lt;b&gt;Does not require a new save game&lt;/b&gt;
+Can safely be enabled/disabled in ongoing saves.
+
+tag:Fluffylicious
+
+</description>
 </ModMetaData>
