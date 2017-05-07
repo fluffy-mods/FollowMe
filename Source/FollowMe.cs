@@ -16,6 +16,9 @@ namespace FollowMe
     public class FollowMe : GameComponent
     {
         #region Fields
+        // todo; can we replace all our custom follow breaking checks with a simple check?
+        // CameraDriver.desiredDolly != Vector2.Zero?
+
         private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly FieldInfo _cameraDriverDesiredDollyField = typeof( CameraDriver ).GetField( "desiredDolly", BindingFlags.Instance | BindingFlags.NonPublic );
 
@@ -23,6 +26,14 @@ namespace FollowMe
         private static bool _currentlyFollowing;
         private static bool _enabled = true;
         private static Thing _followedThing;
+
+        private KeyBindingDef[] _followBreakingKeyBindingDefs =
+        {
+            KeyBindingDefOf.MapDollyDown,
+            KeyBindingDefOf.MapDollyUp,
+            KeyBindingDefOf.MapDollyRight,
+            KeyBindingDefOf.MapDollyLeft
+        };
 
         private KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
 
@@ -115,6 +126,8 @@ namespace FollowMe
             {
                 if ( _currentlyFollowing )
                 {
+                    CheckKeyScroll();
+                    CheckScreenEdgeScroll();
                     CheckCameraJump();
                     CheckDolly();
                 }
@@ -231,6 +244,12 @@ namespace FollowMe
             Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageSound.Benefit);
         }
 
+        private void CheckKeyScroll()
+        {
+            if (_followBreakingKeyBindingDefs.Any(key => key.IsDown))
+                StopFollow( "moved map (key)" );
+        }
+
         private void CheckCameraJump()
         {
             // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
@@ -250,6 +269,32 @@ namespace FollowMe
                     StopFollow("map moved (camera jump)");
             }
         }
+
+        private static bool MouseOverUI => ( Find.WindowStack.GetWindowAt( UI.MousePositionOnUIInverted ) != null );
+
+        private void CheckScreenEdgeScroll()
+        {
+            if ( !Prefs.EdgeScreenScroll || MouseOverUI )
+                return;
+
+            Vector3 mousePosition = Input.mousePosition;
+            var screenCorners = new[]
+                                {
+                                    new Rect( 0f, 0f, 200f, 200f ),
+                                    new Rect( Screen.width - 250, 0f, 255f, 255f ),
+                                    new Rect( 0f, Screen.height - 250, 225f, 255f ),
+                                    new Rect( Screen.width - 250, Screen.height - 250, 255f, 255f )
+                                };
+            if (screenCorners.Any(e => e.Contains(mousePosition)))
+                return;
+
+            if (mousePosition.x < 20f || mousePosition.x > Screen.width - 20
+                 || mousePosition.y > Screen.height - 20f || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
+            {
+                StopFollow( "moved map (dolly)");
+            }
+        }
+
         #endregion Methods
     }
 }
