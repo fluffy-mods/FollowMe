@@ -16,9 +16,6 @@ namespace FollowMe
     public class FollowMe : GameComponent
     {
         #region Fields
-        // todo; can we replace all our custom follow breaking checks with a simple check?
-        // CameraDriver.desiredDolly != Vector2.Zero?
-
         private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly FieldInfo _cameraDriverDesiredDollyField = typeof( CameraDriver ).GetField( "desiredDolly", BindingFlags.Instance | BindingFlags.NonPublic );
 
