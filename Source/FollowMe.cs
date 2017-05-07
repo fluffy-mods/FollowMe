@@ -121,8 +121,8 @@ namespace FollowMe
             try
             {
                 CheckFollowBreakingKeys();
-                CheckFollowCameraDolly();
-                CheckMapJumped();
+                CheckEdgeScreenScroll();
+                CheckCameraJump();
 
                 // start/stop following thing on key press
                 if (_followKey.KeyDownEvent)
@@ -220,11 +220,11 @@ namespace FollowMe
                 StopFollow( "moved map (key)" );
         }
 
-        private void CheckMapJumped()
+        private void CheckCameraJump()
         {
             // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
             // before starting to compare positions
-            if (_cameraHasJumpedAtLeastOnce)
+            if (_cameraHasJumpedAtLeastOnce && _currentlyFollowing)
             {
                 // the actual location of the camera right now
                 IntVec3 currentCameraPosition = Find.CameraDriver.MapPosition;
@@ -244,9 +244,9 @@ namespace FollowMe
             }
         }
 
-        private void CheckFollowCameraDolly()
+        private void CheckEdgeScreenScroll()
         {
-            if (!_currentlyFollowing )
+            if (!_currentlyFollowing || !Prefs.EdgeScreenScroll )
                 return;
 
             Vector3 mousePosition = Input.mousePosition;
