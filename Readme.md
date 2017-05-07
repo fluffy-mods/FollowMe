@@ -12,6 +12,7 @@ Can safely be enabled/disabled in ongoing saves.
  - SkullyWag:	Help with/nagging about updates
  - Raccoon:	German translation
  - AlexSchrod:	Screen edge & Camera jump detection
+ - duduluu:	
 
 # Think you found a bug? 
 Please read [this guide](http://steamcommunity.com/sharedfiles/filedetails/?id=725234314) before creating a bug report,

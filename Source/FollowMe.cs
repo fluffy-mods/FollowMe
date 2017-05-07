@@ -16,20 +16,13 @@ namespace FollowMe
     public class FollowMe : GameComponent
     {
         #region Fields
-
         private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo _cameraDriverDesiredDollyField = typeof( CameraDriver ).GetField( "desiredDolly", BindingFlags.Instance | BindingFlags.NonPublic );
+
         private static bool _cameraHasJumpedAtLeastOnce;
         private static bool _currentlyFollowing;
         private static bool _enabled = true;
         private static Thing _followedThing;
-
-        private KeyBindingDef[] _followBreakingKeyBindingDefs =
-        {
-            KeyBindingDefOf.MapDollyDown,
-            KeyBindingDefOf.MapDollyUp,
-            KeyBindingDefOf.MapDollyRight,
-            KeyBindingDefOf.MapDollyLeft
-        };
 
         private KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
 
@@ -120,9 +113,11 @@ namespace FollowMe
 
             try
             {
-                CheckFollowBreakingKeys();
-                CheckEdgeScreenScroll();
-                CheckCameraJump();
+                if ( _currentlyFollowing )
+                {
+                    CheckCameraJump();
+                    CheckDolly();
+                }
 
                 // start/stop following thing on key press
                 if (_followKey.KeyDownEvent)
@@ -177,27 +172,52 @@ namespace FollowMe
                 return;
             }
             Map mapHeld = thing.MapHeld;
-            if (mapHeld != null && thing.PositionHeld.IsValid && thing.PositionHeld.InBounds(mapHeld))
+            if ( mapHeld != null && thing.PositionHeld.IsValid && thing.PositionHeld.InBounds( mapHeld ) )
             {
                 bool flag = CameraJumper.TryHideWorld();
-                if (Current.Game.VisibleMap != mapHeld)
+                if ( Current.Game.VisibleMap != mapHeld )
                 {
                     Current.Game.VisibleMap = mapHeld;
-                    if (!flag)
+                    if ( !flag )
                     {
-                        SoundDefOf.MapSelected.PlayOneShotOnCamera(null);
+                        SoundDefOf.MapSelected.PlayOneShotOnCamera( null );
                     }
                 }
-                Find.CameraDriver.JumpToVisibleMapLoc(thing.DrawPos); // <---
+                Find.CameraDriver.JumpToVisibleMapLoc( thing.DrawPos ); // <---
+            }
+            else
+            {
+                StopFollow( "invalid thing position" );
             }
         }
 
-        private static Vector3 GetRequestedCameraPosition()
+        private static Vector3 CameraRootPosition
         {
-            if (_cameraDriverRootPosField == null)
-                throw new NullReferenceException("CameraDriver.rootPos field info NULL");
+            get
+            {
 
-            return (Vector3)_cameraDriverRootPosField.GetValue(Find.CameraDriver);
+                if (_cameraDriverRootPosField == null)
+                    throw new NullReferenceException("CameraDriver.rootPos field info NULL");
+
+                return (Vector3)_cameraDriverRootPosField.GetValue(Find.CameraDriver);
+            }
+        }
+
+        private static Vector2 CameraDesiredDolly
+        {
+            get
+            {
+                if (_cameraDriverDesiredDollyField == null )
+                    throw new NullReferenceException( "CameraDriver.desiredDolly field info NULL" );
+
+                return (Vector2) _cameraDriverDesiredDollyField.GetValue( Find.CameraDriver );
+            }
+        }
+
+        private static void CheckDolly()
+        {
+            if ( CameraDesiredDolly != Vector2.zero )
+                StopFollow( "dolly" );
         }
 
         private static void StartFollow(Thing thing)
@@ -211,62 +231,25 @@ namespace FollowMe
             Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageSound.Benefit);
         }
 
-        private void CheckFollowBreakingKeys()
-        {
-            if (!_currentlyFollowing)
-                return;
-
-            if (_followBreakingKeyBindingDefs.Any(key => key.IsDown))
-                StopFollow( "moved map (key)" );
-        }
-
         private void CheckCameraJump()
         {
             // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
             // before starting to compare positions
-            if (_cameraHasJumpedAtLeastOnce && _currentlyFollowing)
+            if (_cameraHasJumpedAtLeastOnce)
             {
                 // the actual location of the camera right now
                 IntVec3 currentCameraPosition = Find.CameraDriver.MapPosition;
 
                 // the location the camera has been requested to be at
-                IntVec3 requestedCameraPosition = GetRequestedCameraPosition().ToIntVec3();
+                IntVec3 requestedCameraPosition = CameraRootPosition.ToIntVec3();
 
                 // these normally stay in sync while following is active, since we were the last to request where the camera should go.
                 // If they get out of sync, it's because the camera has been asked to jump to somewhere else, and we should stop
                 // following our thing.
-                if (Math.Abs(currentCameraPosition.x - requestedCameraPosition.x) > 1 ||
-                     Math.Abs(currentCameraPosition.z - requestedCameraPosition.z) > 1)
-                {
+                if ((currentCameraPosition - requestedCameraPosition).LengthHorizontal > 1 ) 
                     StopFollow("map moved (camera jump)");
-                    return;
-                }
             }
         }
-
-        private void CheckEdgeScreenScroll()
-        {
-            if (!_currentlyFollowing || !Prefs.EdgeScreenScroll )
-                return;
-
-            Vector3 mousePosition = Input.mousePosition;
-            var screenCorners = new[]
-                                {
-                                    new Rect( 0f, 0f, 200f, 200f ),
-                                    new Rect( Screen.width - 250, 0f, 255f, 255f ),
-                                    new Rect( 0f, Screen.height - 250, 225f, 255f ),
-                                    new Rect( Screen.width - 250, Screen.height - 250, 255f, 255f )
-                                };
-            if (screenCorners.Any(e => e.Contains(mousePosition)))
-                return;
-
-            if (mousePosition.x < 20f || mousePosition.x > Screen.width - 20
-                 || mousePosition.y > Screen.height - 20f || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
-            {
-                StopFollow( "moved map (dolly)");
-            }
-        }
-
         #endregion Methods
     }
 }
