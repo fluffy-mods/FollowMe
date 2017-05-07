@@ -6,22 +6,18 @@ using System;
 using System.Linq;
 using System.Reflection;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace FollowMe
 {
-    // TODO: Refactor into GameObject so we can be independent of maps.
-    public class FollowMe : MapComponent
+    public class FollowMe : GameComponent
     {
         #region Fields
 
-        private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos",
-                                                                                                       BindingFlags
-                                                                                                           .Instance |
-                                                                                                       BindingFlags
-                                                                                                           .NonPublic);
-
+        private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
         private static bool _cameraHasJumpedAtLeastOnce;
         private static bool _currentlyFollowing;
         private static bool _enabled = true;
@@ -38,15 +34,7 @@ namespace FollowMe
         private KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
 
         #endregion Fields
-
-        #region Constructors
-
-        public FollowMe(Map map) : base(map)
-        {
-        }
-
-        #endregion Constructors
-
+        
         #region Properties
 
         public static string FollowedLabel
@@ -72,8 +60,12 @@ namespace FollowMe
 
         #region Methods
 
-        public static void StopFollow()
+        public static void StopFollow( string reason )
         {
+#if DEBUG
+            Log.Message( $"FollowMe :: Stopped following {FollowedLabel} :: {reason}" );
+#endif
+
             Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageSound.Negative);
             _followedThing = null;
             _currentlyFollowing = false;
@@ -94,15 +86,14 @@ namespace FollowMe
 
             // cancel current follow (toggle or thing == null)
             else if (_currentlyFollowing && thing == null || thing == _followedThing)
-                StopFollow();
+                StopFollow( "toggled" );
 
             // follow new thing
             else if (thing != null)
                 StartFollow(thing);
         }
 
-        // OnGUI is only called if the current map is active.
-        public override void MapComponentOnGUI()
+        public override void GameComponentOnGUI()
         {
             if (Event.current.type == EventType.mouseUp &&
                  Event.current.button == 1)
@@ -122,20 +113,16 @@ namespace FollowMe
             }
         }
 
-        // Called every frame when the mod is enabled, regardless of which map we're looking at
-        public override void MapComponentUpdate()
+        public override void GameComponentUpdate()
         {
             if (!_enabled)
-                return;
-
-            // cop out if this is not the visible map.
-            if (Find.VisibleMap != map)
                 return;
 
             try
             {
                 CheckFollowBreakingKeys();
                 CheckFollowCameraDolly();
+                CheckMapJumped();
 
                 // start/stop following thing on key press
                 if (_followKey.KeyDownEvent)
@@ -157,67 +144,52 @@ namespace FollowMe
         {
             if (!_currentlyFollowing || _followedThing == null)
                 return;
+            
+            TryJumpSmooth( _followedThing );
+        }
 
-            Vector3 newCameraPosition;
-            Map newMap;
-            if (!_followedThing.Spawned && _followedThing.holdingContainer != null)
+        public static void TryJumpSmooth( GlobalTargetInfo target )
+        {
+            target = CameraJumper.GetAdjustedTarget( target );
+            if ( !target.IsValid )
             {
-                // thing is in some sort of container
-                IThingContainerOwner holder = _followedThing.holdingContainer.owner;
-
-                // if holder is a pawn's carrytracker we can use the smoother positions of the pawns's drawposition
-                var tracker = holder as Pawn_CarryTracker;
-                if (tracker != null)
-                {
-                    newCameraPosition = tracker.pawn.DrawPos;
-                    newMap = tracker.pawn.MapHeld;
-                }
-
-                // otherwise the holder int location will have to do
-                else
-                {
-                    newCameraPosition = holder.GetPosition().ToVector3Shifted();
-                    newMap = holder.GetMap();
-                }
-            }
-
-            // thing is spawned in world, just use the things drawPos
-            else if (_followedThing.Spawned)
-            {
-                newCameraPosition = _followedThing.DrawPos;
-                newMap = _followedThing.MapHeld;
-            }
-
-            // we've lost track of whatever it was we were following
-            else
-            {
-                StopFollow();
+                StopFollow( "invalid target" );
                 return;
             }
 
-            // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
-            // before starting to compare positions
-            if (_cameraHasJumpedAtLeastOnce)
-            {
-                // the actual location of the camera right now
-                IntVec3 currentCameraPosition = Find.CameraDriver.MapPosition;
+            // we have to use our own logic for following spawned things, as CameraJumper
+            // uses integer positions - which would be jerky.
+            if ( target.HasThing )
+                TryJumpSmoothInternal( target.Thing );
+            // However, if we don't have a thing to follow, integer positions will do just fine.
+            else
+                CameraJumper.TryJump( target );
 
-                // the location the camera has been requested to be at
-                IntVec3 requestedCameraPosition = GetRequestedCameraPosition().ToIntVec3();
-
-                // these normally stay in sync while following is active, since we were the last to request where the camera should go.
-                // If they get out of sync, it's because the camera has been asked to jump to somewhere else, and we should stop
-                // following our thing.
-                if (Math.Abs(currentCameraPosition.x - requestedCameraPosition.x) > 1 ||
-                     Math.Abs(currentCameraPosition.z - requestedCameraPosition.z) > 1)
-                {
-                    StopFollow();
-                    return;
-                }
-            }
-
-            Find.CameraDriver.JumpTo(newCameraPosition);
             _cameraHasJumpedAtLeastOnce = true;
+        }
+
+        private static void TryJumpSmoothInternal( Thing thing )
+        {
+            // copypasta from Verse.CameraJumper.TryJumpInternal( Thing ),
+            // but with drawPos instead of PositionHeld.
+            if (Current.ProgramState != ProgramState.Playing)
+            {
+                return;
+            }
+            Map mapHeld = thing.MapHeld;
+            if (mapHeld != null && thing.PositionHeld.IsValid && thing.PositionHeld.InBounds(mapHeld))
+            {
+                bool flag = CameraJumper.TryHideWorld();
+                if (Current.Game.VisibleMap != mapHeld)
+                {
+                    Current.Game.VisibleMap = mapHeld;
+                    if (!flag)
+                    {
+                        SoundDefOf.MapSelected.PlayOneShotOnCamera(null);
+                    }
+                }
+                Find.CameraDriver.JumpToVisibleMapLoc(thing.DrawPos); // <---
+            }
         }
 
         private static Vector3 GetRequestedCameraPosition()
@@ -245,12 +217,36 @@ namespace FollowMe
                 return;
 
             if (_followBreakingKeyBindingDefs.Any(key => key.IsDown))
-                StopFollow();
+                StopFollow( "moved map (key)" );
+        }
+
+        private void CheckMapJumped()
+        {
+            // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
+            // before starting to compare positions
+            if (_cameraHasJumpedAtLeastOnce)
+            {
+                // the actual location of the camera right now
+                IntVec3 currentCameraPosition = Find.CameraDriver.MapPosition;
+
+                // the location the camera has been requested to be at
+                IntVec3 requestedCameraPosition = GetRequestedCameraPosition().ToIntVec3();
+
+                // these normally stay in sync while following is active, since we were the last to request where the camera should go.
+                // If they get out of sync, it's because the camera has been asked to jump to somewhere else, and we should stop
+                // following our thing.
+                if (Math.Abs(currentCameraPosition.x - requestedCameraPosition.x) > 1 ||
+                     Math.Abs(currentCameraPosition.z - requestedCameraPosition.z) > 1)
+                {
+                    StopFollow("map moved (camera jump)");
+                    return;
+                }
+            }
         }
 
         private void CheckFollowCameraDolly()
         {
-            if (!_currentlyFollowing)
+            if (!_currentlyFollowing )
                 return;
 
             Vector3 mousePosition = Input.mousePosition;
@@ -267,7 +263,7 @@ namespace FollowMe
             if (mousePosition.x < 20f || mousePosition.x > Screen.width - 20
                  || mousePosition.y > Screen.height - 20f || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
             {
-                StopFollow();
+                StopFollow( "moved map (dolly)");
             }
         }
 
