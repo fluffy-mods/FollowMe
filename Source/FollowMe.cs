@@ -15,9 +15,39 @@ namespace FollowMe
 {
     public class FollowMe : GameComponent
     {
+        public FollowMe( Game game )
+        {
+            // noop
+        }
+
+        #region Properties
+
+        public static string FollowedLabel
+        {
+            get
+            {
+                if ( _followedThing == null )
+                    return String.Empty;
+
+                var pawn = _followedThing as Pawn;
+                if ( pawn != null )
+                    return pawn.NameStringShort;
+
+                return _followedThing.LabelCap;
+            }
+        }
+
+        #endregion Properties
+
         #region Fields
-        private static readonly FieldInfo _cameraDriverRootPosField = typeof(CameraDriver).GetField("rootPos", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static readonly FieldInfo _cameraDriverDesiredDollyField = typeof( CameraDriver ).GetField( "desiredDolly", BindingFlags.Instance | BindingFlags.NonPublic );
+
+        private static readonly FieldInfo _cameraDriverRootPosField = typeof( CameraDriver ).GetField( "rootPos",
+                                                                                                       BindingFlags
+                                                                                                           .Instance |
+                                                                                                       BindingFlags
+                                                                                                           .NonPublic );
+        private static readonly FieldInfo _cameraDriverDesiredDollyField =
+            typeof( CameraDriver ).GetField( "desiredDolly", BindingFlags.Instance | BindingFlags.NonPublic );
 
         private static bool _cameraHasJumpedAtLeastOnce;
         private static bool _currentlyFollowing;
@@ -32,34 +62,41 @@ namespace FollowMe
             KeyBindingDefOf.MapDollyLeft
         };
 
-        private KeyBindingDef _followKey = KeyBindingDef.Named("FollowSelected");
+        private KeyBindingDef _followKey = KeyBindingDef.Named( "FollowSelected" );
 
         #endregion Fields
-        
-        #region Properties
-
-        public static string FollowedLabel
-        {
-            get
-            {
-                if (_followedThing == null)
-                {
-                    return String.Empty;
-                }
-
-                var pawn = _followedThing as Pawn;
-                if (pawn != null)
-                {
-                    return pawn.NameStringShort;
-                }
-
-                return _followedThing.LabelCap;
-            }
-        }
-
-        #endregion Properties
 
         #region Methods
+
+        public static void TryStartFollow( Thing thing )
+        {
+            if ( !_currentlyFollowing && thing == null )
+                if ( Find.Selector.NumSelected > 1 )
+                    Messages.Message( "FollowMe.RejectMultiple".Translate(), MessageSound.RejectInput );
+                else if ( Find.Selector.NumSelected == 0 )
+                    Messages.Message( "FollowMe.RejectNoSelection".Translate(), MessageSound.RejectInput );
+                else
+                    Messages.Message( "FollowMe.RejectNotAThing".Translate(), MessageSound.RejectInput );
+
+            // cancel current follow (toggle or thing == null)
+            else if ( _currentlyFollowing && thing == null || thing == _followedThing )
+                StopFollow( "toggled" );
+
+            // follow new thing
+            else if ( thing != null )
+                StartFollow( thing );
+        }
+
+        private static void StartFollow( Thing thing )
+        {
+            if ( thing == null )
+                throw new ArgumentNullException( nameof( thing ) );
+
+            _followedThing = thing;
+            _currentlyFollowing = true;
+
+            Messages.Message( "FollowMe.Follow".Translate( FollowedLabel ), MessageSound.Benefit );
+        }
 
         public static void StopFollow( string reason )
         {
@@ -67,46 +104,25 @@ namespace FollowMe
             Log.Message( $"FollowMe :: Stopped following {FollowedLabel} :: {reason}" );
 #endif
 
-            Messages.Message("FollowMe.Cancel".Translate(FollowedLabel), MessageSound.Negative);
+            Messages.Message( "FollowMe.Cancel".Translate( FollowedLabel ), MessageSound.Negative );
             _followedThing = null;
             _currentlyFollowing = false;
             _cameraHasJumpedAtLeastOnce = false;
         }
 
-        public static void TryStartFollow(Thing thing)
-        {
-            if (!_currentlyFollowing && thing == null)
-            {
-                if (Find.Selector.NumSelected > 1)
-                    Messages.Message("FollowMe.RejectMultiple".Translate(), MessageSound.RejectInput);
-                else if (Find.Selector.NumSelected == 0)
-                    Messages.Message("FollowMe.RejectNoSelection".Translate(), MessageSound.RejectInput);
-                else
-                    Messages.Message("FollowMe.RejectNotAThing".Translate(), MessageSound.RejectInput);
-            }
-
-            // cancel current follow (toggle or thing == null)
-            else if (_currentlyFollowing && thing == null || thing == _followedThing)
-                StopFollow( "toggled" );
-
-            // follow new thing
-            else if (thing != null)
-                StartFollow(thing);
-        }
-
         public override void GameComponentOnGUI()
         {
-            if (Event.current.type == EventType.mouseUp &&
-                 Event.current.button == 1)
+            if ( Event.current.type == EventType.mouseUp &&
+                 Event.current.button == 1 )
             {
                 // get mouseposition, invert y axis (because UI has origin in top left, Input in bottom left).
                 Vector3 pos = Input.mousePosition;
                 pos.y = Screen.height - pos.y;
-                Thing thing = Find.ColonistBar.ColonistOrCorpseAt(pos);
-                if (thing != null)
+                Thing thing = Find.ColonistBar.ColonistOrCorpseAt( pos );
+                if ( thing != null )
                 {
                     // start following
-                    TryStartFollow(thing);
+                    TryStartFollow( thing );
 
                     // use event so it doesn't bubble through
                     Event.current.Use();
@@ -116,7 +132,7 @@ namespace FollowMe
 
         public override void GameComponentUpdate()
         {
-            if (!_enabled)
+            if ( !_enabled )
                 return;
 
             try
@@ -130,26 +146,26 @@ namespace FollowMe
                 }
 
                 // start/stop following thing on key press
-                if (_followKey.KeyDownEvent)
-                    TryStartFollow(Find.Selector.SingleSelectedObject as Thing);
+                if ( _followKey.KeyDownEvent )
+                    TryStartFollow( Find.Selector.SingleSelectedObject as Thing );
 
                 // move camera
                 Follow();
             }
 
             // catch exception to avoid error spam
-            catch (Exception e)
+            catch ( Exception e )
             {
                 _enabled = false;
-                Log.Error(e.ToString());
+                Log.Error( e.ToString() );
             }
         }
 
         private static void Follow()
         {
-            if (!_currentlyFollowing || _followedThing == null)
+            if ( !_currentlyFollowing || _followedThing == null )
                 return;
-            
+
             TryJumpSmooth( _followedThing );
         }
 
@@ -177,10 +193,9 @@ namespace FollowMe
         {
             // copypasta from Verse.CameraJumper.TryJumpInternal( Thing ),
             // but with drawPos instead of PositionHeld.
-            if (Current.ProgramState != ProgramState.Playing)
-            {
+            if ( Current.ProgramState != ProgramState.Playing )
                 return;
-            }
+
             Map mapHeld = thing.MapHeld;
             if ( mapHeld != null && thing.PositionHeld.IsValid && thing.PositionHeld.InBounds( mapHeld ) )
             {
@@ -189,9 +204,7 @@ namespace FollowMe
                 {
                     Current.Game.VisibleMap = mapHeld;
                     if ( !flag )
-                    {
                         SoundDefOf.MapSelected.PlayOneShotOnCamera( null );
-                    }
                 }
                 Find.CameraDriver.JumpToVisibleMapLoc( thing.DrawPos ); // <---
             }
@@ -205,11 +218,10 @@ namespace FollowMe
         {
             get
             {
+                if ( _cameraDriverRootPosField == null )
+                    throw new NullReferenceException( "CameraDriver.rootPos field info NULL" );
 
-                if (_cameraDriverRootPosField == null)
-                    throw new NullReferenceException("CameraDriver.rootPos field info NULL");
-
-                return (Vector3)_cameraDriverRootPosField.GetValue(Find.CameraDriver);
+                return (Vector3) _cameraDriverRootPosField.GetValue( Find.CameraDriver );
             }
         }
 
@@ -217,7 +229,7 @@ namespace FollowMe
         {
             get
             {
-                if (_cameraDriverDesiredDollyField == null )
+                if ( _cameraDriverDesiredDollyField == null )
                     throw new NullReferenceException( "CameraDriver.desiredDolly field info NULL" );
 
                 return (Vector2) _cameraDriverDesiredDollyField.GetValue( Find.CameraDriver );
@@ -230,20 +242,9 @@ namespace FollowMe
                 StopFollow( "dolly" );
         }
 
-        private static void StartFollow(Thing thing)
-        {
-            if (thing == null)
-                throw new ArgumentNullException(nameof(thing));
-
-            _followedThing = thing;
-            _currentlyFollowing = true;
-
-            Messages.Message("FollowMe.Follow".Translate(FollowedLabel), MessageSound.Benefit);
-        }
-
         private void CheckKeyScroll()
         {
-            if (_followBreakingKeyBindingDefs.Any(key => key.IsDown))
+            if ( _followBreakingKeyBindingDefs.Any( key => key.IsDown ) )
                 StopFollow( "moved map (key)" );
         }
 
@@ -251,7 +252,7 @@ namespace FollowMe
         {
             // to avoid cancelling the following immediately after it starts, allow the camera to move to the followed thing once
             // before starting to compare positions
-            if (_cameraHasJumpedAtLeastOnce)
+            if ( _cameraHasJumpedAtLeastOnce )
             {
                 // the actual location of the camera right now
                 IntVec3 currentCameraPosition = Find.CameraDriver.MapPosition;
@@ -262,12 +263,12 @@ namespace FollowMe
                 // these normally stay in sync while following is active, since we were the last to request where the camera should go.
                 // If they get out of sync, it's because the camera has been asked to jump to somewhere else, and we should stop
                 // following our thing.
-                if ((currentCameraPosition - requestedCameraPosition).LengthHorizontal > 1 ) 
-                    StopFollow("map moved (camera jump)");
+                if ( ( currentCameraPosition - requestedCameraPosition ).LengthHorizontal > 1 )
+                    StopFollow( "map moved (camera jump)" );
             }
         }
 
-        private static bool MouseOverUI => ( Find.WindowStack.GetWindowAt( UI.MousePositionOnUIInverted ) != null );
+        private static bool MouseOverUI => Find.WindowStack.GetWindowAt( UI.MousePositionOnUIInverted ) != null;
 
         private void CheckScreenEdgeScroll()
         {
@@ -282,14 +283,12 @@ namespace FollowMe
                                     new Rect( 0f, Screen.height - 250, 225f, 255f ),
                                     new Rect( Screen.width - 250, Screen.height - 250, 255f, 255f )
                                 };
-            if (screenCorners.Any(e => e.Contains(mousePosition)))
+            if ( screenCorners.Any( e => e.Contains( mousePosition ) ) )
                 return;
 
-            if (mousePosition.x < 20f || mousePosition.x > Screen.width - 20
-                 || mousePosition.y > Screen.height - 20f || mousePosition.y < (Screen.fullScreen ? 6f : 20f))
-            {
-                StopFollow( "moved map (dolly)");
-            }
+            if ( mousePosition.x < 20f || mousePosition.x > Screen.width - 20
+                 || mousePosition.y > Screen.height - 20f || mousePosition.y < ( Screen.fullScreen ? 6f : 20f ) )
+                StopFollow( "moved map (dolly)" );
         }
 
         #endregion Methods
