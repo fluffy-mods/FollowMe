@@ -112,6 +112,9 @@ namespace FollowMe
 
         public override void GameComponentOnGUI()
         {
+            if ( Current.ProgramState != ProgramState.Playing )
+                return; // gamecomp is already active in the 'setup' stage, but follow me shouldnt be.
+
             if ( Event.current.type == EventType.mouseUp &&
                  Event.current.button == 1 )
             {
