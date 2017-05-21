@@ -15,9 +15,14 @@ namespace FollowMe
 {
     public class FollowMe : GameComponent
     {
+        public FollowMe()
+        {
+            // scribe
+        }
+
         public FollowMe( Game game )
         {
-            // noop
+            // game init
         }
 
         #region Properties
