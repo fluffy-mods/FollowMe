@@ -123,10 +123,10 @@ namespace FollowMe
             if ( Event.current.type == EventType.mouseUp &&
                  Event.current.button == 1 )
             {
-                // get mouseposition, invert y axis (because UI has origin in top left, Input in bottom left).
-                Vector3 pos = Input.mousePosition;
-                pos.y = Screen.height - pos.y;
-                Thing thing = Find.ColonistBar.ColonistOrCorpseAt( pos );
+                // Get entry at mouse position - UI.MousePositionOnUIInverted handles;
+                //  - inverting y axis (UI starts top right, screen starts bottom right)
+                //  - UI scale
+                Thing thing = Find.ColonistBar.ColonistOrCorpseAt( UI.MousePositionOnUIInverted );
                 if ( thing != null )
                 {
                     // start following
