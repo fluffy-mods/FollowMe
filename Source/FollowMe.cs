@@ -77,11 +77,11 @@ namespace FollowMe
         {
             if ( !_currentlyFollowing && thing == null )
                 if ( Find.Selector.NumSelected > 1 )
-                    Messages.Message( "FollowMe.RejectMultiple".Translate(), MessageSound.RejectInput );
+                    Mod.DoMessage( "FollowMe.RejectMultiple".Translate(), MessageTypeDefOf.RejectInput );
                 else if ( Find.Selector.NumSelected == 0 )
-                    Messages.Message( "FollowMe.RejectNoSelection".Translate(), MessageSound.RejectInput );
+                    Mod.DoMessage( "FollowMe.RejectNoSelection".Translate(), MessageTypeDefOf.RejectInput );
                 else
-                    Messages.Message( "FollowMe.RejectNotAThing".Translate(), MessageSound.RejectInput );
+                    Mod.DoMessage( "FollowMe.RejectNotAThing".Translate(), MessageTypeDefOf.RejectInput );
 
             // cancel current follow (toggle or thing == null)
             else if ( _currentlyFollowing && thing == null || thing == _followedThing )
@@ -100,7 +100,7 @@ namespace FollowMe
             _followedThing = thing;
             _currentlyFollowing = true;
 
-            Messages.Message( "FollowMe.Follow".Translate( FollowedLabel ), MessageSound.Benefit );
+            Mod.DoMessage( "FollowMe.Follow".Translate( FollowedLabel ), MessageTypeDefOf.PositiveEvent );
         }
 
         public static void StopFollow( string reason )
@@ -109,7 +109,7 @@ namespace FollowMe
             Log.Message( $"FollowMe :: Stopped following {FollowedLabel} :: {reason}" );
 #endif
 
-            Messages.Message( "FollowMe.Cancel".Translate( FollowedLabel ), MessageSound.Negative );
+            Mod.DoMessage( "FollowMe.Cancel".Translate( FollowedLabel ), MessageTypeDefOf.SituationResolved );
             _followedThing = null;
             _currentlyFollowing = false;
             _cameraHasJumpedAtLeastOnce = false;
