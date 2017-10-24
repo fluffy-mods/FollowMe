@@ -3,7 +3,7 @@
   <name>Follow Me</name>
   <author>Fluffy</author>
   <url>https://ludeon.com/forums/index.php?topic=16120.0</url>
-  <targetVersion>0.18.1696</targetVersion>
+  <targetVersion>0.18.1700</targetVersion>
   <description>Gives the camera tracking capabilities. 
 
 &lt;size=24&gt;Features&lt;/size&gt;
@@ -20,7 +20,7 @@ AlexSchrod:    Screen edge &amp; Camera jump detection
 duduluu:    Chinese translations
 
 &lt;size=24&gt;Version&lt;/size&gt;
-This is version v0.18.0.0
+This is version v0.18.0.1
 
 </description>
 </ModMetaData>

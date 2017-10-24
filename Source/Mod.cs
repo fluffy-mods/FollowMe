@@ -62,7 +62,7 @@ namespace FollowMe
             var list = new Listing_Standard();
             list.Begin( rect );
             list.CheckboxLabeled("FollowMe.Notifications".Translate(), ref showNotifications, "FollowMe.Notifications.Tooltip".Translate());
-            list.CheckboxLabeled("FollowMe.Sounds".Translate(), ref showNotifications, "FollowMe.Notifications.Sounds".Translate());
+            list.CheckboxLabeled("FollowMe.Sounds".Translate(), ref playSounds, "FollowMe.Notifications.Sounds".Translate());
             list.End();
         }
     }
