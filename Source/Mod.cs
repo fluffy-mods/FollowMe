@@ -48,6 +48,7 @@ namespace FollowMe
     {
         public static bool showNotifications = true;
         public static bool playSounds = true;
+        public static bool edgeDetection = true;
 
         public override void ExposeData()
         {
@@ -55,6 +56,7 @@ namespace FollowMe
 
             Scribe_Values.Look( ref showNotifications, "showNotifications", true );
             Scribe_Values.Look( ref playSounds, "playSounds", true );
+            Scribe_Values.Look( ref edgeDetection, "edgeDetection", true );
         }
 
         public static void DoWindowContents( Rect rect )
@@ -62,7 +64,8 @@ namespace FollowMe
             var list = new Listing_Standard();
             list.Begin( rect );
             list.CheckboxLabeled("FollowMe.Notifications".Translate(), ref showNotifications, "FollowMe.Notifications.Tooltip".Translate());
-            list.CheckboxLabeled("FollowMe.Sounds".Translate(), ref playSounds, "FollowMe.Notifications.Sounds".Translate());
+            list.CheckboxLabeled("FollowMe.Sounds".Translate(), ref playSounds, "FollowMe.Sounds.Tooltip".Translate());
+            list.CheckboxLabeled("FollowMe.EdgeDetection".Translate(), ref edgeDetection, "FollowMe.EdgeDetection.Tooltip".Translate());
             list.End();
         }
     }
