@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <FollowMe.Cancel>{0}の追尾を停止しました。</FollowMe.Cancel>
+  <FollowMe.Follow>{0}の追尾を開始しました。</FollowMe.Follow>
+
+  <FollowMe.RejectMultiple>複数のターゲットを追尾できません。</FollowMe.RejectMultiple>
+  <FollowMe.RejectNoSelection>何も選択されてないので追尾できません。</FollowMe.RejectNoSelection>
+  <FollowMe.RejectNotAThing>ポーンが選択されてないので追尾できません。</FollowMe.RejectNotAThing>
+
+</LanguageData>
