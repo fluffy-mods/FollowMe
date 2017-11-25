@@ -282,7 +282,7 @@ namespace FollowMe
 
         private void CheckScreenEdgeScroll()
         {
-            if ( !Prefs.EdgeScreenScroll || MouseOverUI )
+            if ( !Application.isFocused || !Prefs.EdgeScreenScroll || MouseOverUI )
                 return;
 
             Vector3 mousePosition = Input.mousePosition;
