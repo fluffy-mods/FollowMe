@@ -8,4 +8,11 @@
 	<FollowMe.RejectNoSelection>Can not follow, nothing selected.</FollowMe.RejectNoSelection>
 	<FollowMe.RejectNotAThing>Can not follow, selection is not a thing.</FollowMe.RejectNotAThing>
 
+	<FollowMe.Notifications>Show notifications</FollowMe.Notifications>
+	<FollowMe.Notifications.Tooltip>Should notifications be shown when the followed target changes?</FollowMe.Notifications.Tooltip>
+	<FollowMe.Sounds>Play sounds</FollowMe.Sounds>
+	<FollowMe.Sounds.Tooltip>Should a sound be played when the followed target changes?</FollowMe.Sounds.Tooltip>
+	<FollowMe.EdgeDetection>Mouse edge detection</FollowMe.EdgeDetection>
+	<FollowMe.EdgeDetection.Tooltip>Should we stop following when the mouse is near the edge of the screen?</FollowMe.EdgeDetection.Tooltip>
+
 </LanguageData>

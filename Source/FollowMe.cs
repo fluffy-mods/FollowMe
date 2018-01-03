@@ -148,9 +148,11 @@ namespace FollowMe
                 if ( _currentlyFollowing )
                 {
                     CheckKeyScroll();
-                    CheckScreenEdgeScroll();
                     CheckCameraJump();
                     CheckDolly();
+
+                    if (Settings.edgeDetection)
+                        CheckScreenEdgeScroll();
                 }
 
                 // start/stop following thing on key press
@@ -280,7 +282,7 @@ namespace FollowMe
 
         private void CheckScreenEdgeScroll()
         {
-            if ( !Prefs.EdgeScreenScroll || MouseOverUI )
+            if ( !Application.isFocused || !Prefs.EdgeScreenScroll || MouseOverUI )
                 return;
 
             Vector3 mousePosition = Input.mousePosition;
@@ -294,9 +296,11 @@ namespace FollowMe
             if ( screenCorners.Any( e => e.Contains( mousePosition ) ) )
                 return;
 
-            if ( mousePosition.x < 20f || mousePosition.x > Screen.width - 20
-                 || mousePosition.y > Screen.height - 20f || mousePosition.y < ( Screen.fullScreen ? 6f : 20f ) )
-                StopFollow( "moved map (dolly)" );
+            if ( mousePosition.x < 20f 
+                || mousePosition.x > Screen.width - 20
+                || mousePosition.y > Screen.height - 20f 
+                || mousePosition.y < ( Screen.fullScreen ? 6f : 20f ) )
+                StopFollow( "moved map (mouse edge)" );
         }
 
         #endregion Methods
