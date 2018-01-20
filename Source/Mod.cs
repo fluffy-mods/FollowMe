@@ -1,7 +1,6 @@
 ﻿// Mod.cs
 // Copyright Karel Kroeze, 2017-2017
 
-using System.Runtime.InteropServices;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -14,6 +13,7 @@ namespace FollowMe
     {
         public Mod( ModContentPack content ) : base( content )
         {
+            GetSettings<Settings>();
         }
 
         public override string SettingsCategory()
@@ -24,6 +24,7 @@ namespace FollowMe
         public override void DoSettingsWindowContents( Rect inRect )
         {
             Settings.DoWindowContents( inRect );
+            WriteSettings();
         }
 
         public static void DoMessage( string message, MessageTypeDef type )
