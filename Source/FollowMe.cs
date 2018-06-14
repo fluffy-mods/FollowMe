@@ -36,7 +36,7 @@ namespace FollowMe
 
                 var pawn = _followedThing as Pawn;
                 if ( pawn != null )
-                    return pawn.NameStringShort;
+                    return pawn.Name.ToStringShort;
 
                 return _followedThing.LabelCap;
             }
@@ -61,10 +61,10 @@ namespace FollowMe
 
         private KeyBindingDef[] _followBreakingKeyBindingDefs =
         {
-            KeyBindingDefOf.MapDollyDown,
-            KeyBindingDefOf.MapDollyUp,
-            KeyBindingDefOf.MapDollyRight,
-            KeyBindingDefOf.MapDollyLeft
+            KeyBindingDefOf.MapDolly_Down,
+            KeyBindingDefOf.MapDolly_Up,
+            KeyBindingDefOf.MapDolly_Right,
+            KeyBindingDefOf.MapDolly_Left
         };
 
         private KeyBindingDef _followKey = KeyBindingDef.Named( "FollowSelected" );
@@ -121,7 +121,7 @@ namespace FollowMe
                 return; // gamecomp is already active in the 'setup' stage, but follow me shouldnt be.
 
             if ( Event.current.type == EventType.mouseUp &&
-                 Event.current.button == 1 )
+                 Event.current.button == 2 )
             {
                 // Get entry at mouse position - UI.MousePositionOnUIInverted handles;
                 //  - inverting y axis (UI starts top right, screen starts bottom right)
@@ -210,13 +210,13 @@ namespace FollowMe
             if ( mapHeld != null && thing.PositionHeld.IsValid && thing.PositionHeld.InBounds( mapHeld ) )
             {
                 bool flag = CameraJumper.TryHideWorld();
-                if ( Current.Game.VisibleMap != mapHeld )
+                if ( Find.CurrentMap != mapHeld )
                 {
-                    Current.Game.VisibleMap = mapHeld;
+                    Current.Game.CurrentMap = mapHeld;
                     if ( !flag )
                         SoundDefOf.MapSelected.PlayOneShotOnCamera( null );
                 }
-                Find.CameraDriver.JumpToVisibleMapLoc( thing.DrawPos ); // <---
+                Find.CameraDriver.JumpToCurrentMapLoc( thing.DrawPos ); // <---
             }
             else
             {
