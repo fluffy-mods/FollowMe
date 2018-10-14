@@ -32,10 +32,10 @@ namespace FollowMe
             get
             {
                 if ( _followedThing == null )
-                    return String.Empty;
+                    return string.Empty;
 
                 var pawn = _followedThing as Pawn;
-                if ( pawn != null )
+                if ( pawn?.Name != null )
                     return pawn.Name.ToStringShort;
 
                 return _followedThing.LabelCap;
@@ -75,6 +75,7 @@ namespace FollowMe
 
         public static void TryStartFollow( Thing thing )
         {
+            _enabled = true;
             if ( !_currentlyFollowing && thing == null )
                 if ( Find.Selector.NumSelected > 1 )
                     Mod.DoMessage( "FollowMe.RejectMultiple".Translate(), MessageTypeDefOf.RejectInput );
@@ -140,6 +141,10 @@ namespace FollowMe
 
         public override void GameComponentUpdate()
         {
+            // start/stop following thing on key press
+            if (_followKey.KeyDownEvent)
+                TryStartFollow(Find.Selector.SingleSelectedObject as Thing);
+
             if ( !_enabled )
                 return;
 
@@ -155,9 +160,6 @@ namespace FollowMe
                         CheckScreenEdgeScroll();
                 }
 
-                // start/stop following thing on key press
-                if ( _followKey.KeyDownEvent )
-                    TryStartFollow( Find.Selector.SingleSelectedObject as Thing );
 
                 // move camera
                 Follow();
