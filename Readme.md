@@ -3,7 +3,7 @@
 Gives the camera tracking capabilities. 
 
 # Features
-Press the 'Home' key (default, can be changed with in-game keybinding settings) while any colonist, enemy, animal or item is selected, and the camera will follow them (including furniture and plants - but they tend to not move much). Alternatively, you can right click colonists in the Colonist Bar on top of the screen to toggle following.
+Press the 'Home' key (default, can be changed with in-game keybinding settings) while any colonist, enemy, animal or item is selected, and the camera will follow them (including furniture and plants - but they tend to not move much). Alternatively, you can click with the middle mouse button on colonists in the Colonist Bar on top of the screen to toggle following.
 
 **Does not require a new save game**
 Can safely be enabled/disabled in ongoing saves.
@@ -36,4 +36,4 @@ Show your appreciation by buying me a coffee (or contribute towards a nice singl
 [![Buy Me a Coffee](http://i.imgur.com/EjWiUwx.gif)](https://ko-fi.com/fluffymods)
 
 # Version
-This is version 3.1.46, for RimWorld 1.0.2059.
+This is version 3.2.47, for RimWorld 1.0.2059.
