@@ -3,6 +3,8 @@ SteamConfig.vdf
 .mailmap
 .idea
 
+packages
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

@@ -2,15 +2,16 @@
 
 <Defs>
 
-  <!-- In-game camera -->
-  <KeyBindingDef Name="GameKeyBinding" Abstract="true">
-    <category>Game</category>
-  </KeyBindingDef>
-
   <KeyBindingDef ParentName="GameKeyBinding">
     <defName>FollowSelected</defName>
     <label>follow</label>
     <defaultKeyCodeA>Home</defaultKeyCodeA>
+  </KeyBindingDef>  
+
+  <KeyBindingDef ParentName="GameKeyBinding">
+    <defName>CinematicCamera</defName>
+    <label>toggle cinematic camera</label>
+    <defaultKeyCodeA>End</defaultKeyCodeA>
   </KeyBindingDef>
 
 </Defs>

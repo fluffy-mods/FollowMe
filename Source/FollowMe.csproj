@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Lib.Harmony.1.2.0.1\lib\net35\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\dlls\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -46,11 +49,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cinematics\CinematicCameraManager.cs" />
+    <Compile Include="Cinematics\InterestWorker.cs" />
+    <Compile Include="Cinematics\CinematicCamera.cs" />
+    <Compile Include="Cinematics\Patch_DoPlaySettingsGlobalControls.cs" />
     <Compile Include="FollowMe.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mod update -x -n "Follow Me"</PostBuildEvent>

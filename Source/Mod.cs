@@ -1,6 +1,8 @@
 ﻿// Mod.cs
 // Copyright Karel Kroeze, 2017-2017
 
+using System.Reflection;
+using Harmony;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -24,7 +26,6 @@ namespace FollowMe
         public override void DoSettingsWindowContents( Rect inRect )
         {
             Settings.DoWindowContents( inRect );
-            WriteSettings();
         }
 
         public static void DoMessage( string message, MessageTypeDef type )
@@ -39,22 +40,20 @@ namespace FollowMe
                     Messages.Message( message, target, type );
                 else
                     Messages.Message( message, target, MessageTypeDefOf.SilentInput );
-            else
-                if ( Settings.playSounds )
-                    type.sound.PlayOneShotOnCamera();
+            else if ( Settings.playSounds )
+                type.sound.PlayOneShotOnCamera();
         }
     }
 
     public class Settings : ModSettings
     {
         public static bool showNotifications = true;
-        public static bool playSounds = true;
-        public static bool edgeDetection = true;
+        public static bool playSounds        = true;
+        public static bool edgeDetection     = true;
 
         public override void ExposeData()
         {
             base.ExposeData();
-
             Scribe_Values.Look( ref showNotifications, "showNotifications", true );
             Scribe_Values.Look( ref playSounds, "playSounds", true );
             Scribe_Values.Look( ref edgeDetection, "edgeDetection", true );
@@ -64,9 +63,12 @@ namespace FollowMe
         {
             var list = new Listing_Standard();
             list.Begin( rect );
-            list.CheckboxLabeled("FollowMe.Notifications".Translate(), ref showNotifications, "FollowMe.Notifications.Tooltip".Translate());
-            list.CheckboxLabeled("FollowMe.Sounds".Translate(), ref playSounds, "FollowMe.Sounds.Tooltip".Translate());
-            list.CheckboxLabeled("FollowMe.EdgeDetection".Translate(), ref edgeDetection, "FollowMe.EdgeDetection.Tooltip".Translate());
+            list.CheckboxLabeled( "FollowMe.Notifications".Translate(), ref showNotifications,
+                                  "FollowMe.Notifications.Tooltip".Translate() );
+            list.CheckboxLabeled( "FollowMe.Sounds".Translate(), ref playSounds,
+                                  "FollowMe.Sounds.Tooltip".Translate() );
+            list.CheckboxLabeled( "FollowMe.EdgeDetection".Translate(), ref edgeDetection,
+                                  "FollowMe.EdgeDetection.Tooltip".Translate() );
             list.End();
         }
     }
