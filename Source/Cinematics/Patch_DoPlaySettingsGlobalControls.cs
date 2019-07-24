@@ -25,7 +25,8 @@ namespace FollowMe
                     foreach ( var camera in CinematicCameraManager.Cameras )
                         options.Add( new FloatMenuOption( camera.LabelCap, () => CinematicCameraManager.Start( camera ) ) );
 
-                    if ( options.Any() )
+                    options.Add( new FloatMenuOption( "Fluffy.FollowMe.CinematicCamera.Off".Translate(),
+                                                      () => CinematicCameraManager.Stop() ) );
                         Find.WindowStack.Add( new FloatMenu( options ) );
                 }
 

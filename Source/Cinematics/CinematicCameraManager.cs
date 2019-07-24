@@ -29,15 +29,21 @@ namespace FollowMe
             }
         }
 
+        public override void LoadedGame()
+        {
+            base.LoadedGame();
+            Stop();
+        }
+
         public CinematicCameraManager( Game game )
         {
             toggleCamera = KeyBindingDef.Named( "CinematicCamera" );
         }
 
-        public static void Stop( string reason )
+        public static void Stop( string reason = null )
         {
             FollowMe.StopFollow( reason );
-            currentCamera.Stop();
+            currentCamera?.Stop();
             currentCamera = null;
         }
 
