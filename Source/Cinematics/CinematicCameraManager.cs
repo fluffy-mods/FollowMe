@@ -1,11 +1,9 @@
 ﻿// CinematicCameraManager.cs
 // Copyright Karel Kroeze
 
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Harmony;
-using RimWorld;
 using Verse;
 
 namespace FollowMe

@@ -67,7 +67,7 @@ namespace FollowMe
         {
             var targets = Find.CurrentMap.listerThings
                               .ThingsInGroup( Worker.PotentiallyInteresting )
-                              .Where( t => Worker.Interesting( t ) );
+                              .Where( t => t != Subject && Worker.Interesting( t ) );
             if ( !targets.Any() )
                 CinematicCameraManager.Stop( "Fluffy.FollowMe.Cinematics.NoValidTargets".Translate() );
             var target = targets.MaxBy( t => Worker.InterestFor( t ) * CooldownFactor( t ) );
