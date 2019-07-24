@@ -52,7 +52,6 @@ namespace FollowMe
         public virtual void Stop( bool notify = true )
         {
             Messages.Message( $"Fluffy.FollowMe.CameraStop".Translate( LabelCap ), MessageTypeDefOf.NeutralEvent, false );
-            FollowMe.StopFollow();
             _currentSubject = null;
             _ticksOfFame    = -1;
             _pastSubjects.Clear();

@@ -16,6 +16,7 @@
 	<FollowMe.EdgeDetection.Tooltip>Should we stop following when the mouse is near the edge of the screen?</FollowMe.EdgeDetection.Tooltip>
 
 	<Fluffy.FollowMe.CinematicCamera>Cinematic Camera</Fluffy.FollowMe.CinematicCamera>
+	<Fluffy.FollowMe.CinematicCamera.Off>Off</Fluffy.FollowMe.CinematicCamera.Off>
 	<Fluffy.FollowMe.CameraStart>Starting camera "{0}"</Fluffy.FollowMe.CameraStart>
 	<Fluffy.FollowMe.CameraStop>Stopping camera "{0}"</Fluffy.FollowMe.CameraStop>
 	<Fluffy.FollowMe.Cinematics.NoValidTargets>Stopping cinematic camera: No valid targets.</Fluffy.FollowMe.Cinematics.NoValidTargets>

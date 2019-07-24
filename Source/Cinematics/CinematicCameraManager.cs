@@ -26,6 +26,7 @@ namespace FollowMe
             {
                 var harmonyInstance = HarmonyInstance.Create( "Fluffy.FollowMe" );
                 harmonyInstance.PatchAll( Assembly.GetExecutingAssembly() );
+                _patched = true;
             }
         }
 
@@ -40,9 +41,10 @@ namespace FollowMe
             toggleCamera = KeyBindingDef.Named( "CinematicCamera" );
         }
 
-        public static void Stop( string reason = null )
+        public static void Stop( string reason = null, bool stopFollow = true )
         {
-            FollowMe.StopFollow( reason );
+            if (stopFollow)
+                FollowMe.StopFollow( reason );
             currentCamera?.Stop();
             currentCamera = null;
         }

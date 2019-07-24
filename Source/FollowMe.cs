@@ -130,6 +130,8 @@ namespace FollowMe
             _followedThing              = null;
             _currentlyFollowing         = false;
             _cameraHasJumpedAtLeastOnce = false;
+
+            CinematicCameraManager.Stop( null, false );
         }
 
         public override void GameComponentOnGUI()
