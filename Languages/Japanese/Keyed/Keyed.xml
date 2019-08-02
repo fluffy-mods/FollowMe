@@ -15,4 +15,10 @@
   <FollowMe.EdgeDetection>マウス画面端検出</FollowMe.EdgeDetection>
   <FollowMe.EdgeDetection.Tooltip>マウスが画面の端に近づいた際に、追跡をやめますか?</FollowMe.EdgeDetection.Tooltip>
 
+  <Fluffy.FollowMe.CinematicCamera>シルマチックカメラ</Fluffy.FollowMe.CinematicCamera>
+  <Fluffy.FollowMe.CinematicCamera.Off>オフ</Fluffy.FollowMe.CinematicCamera.Off>
+  <Fluffy.FollowMe.CameraStart>カメラ開始「{0}」</Fluffy.FollowMe.CameraStart>
+  <Fluffy.FollowMe.CameraStop>カメラ停止「{0}」</Fluffy.FollowMe.CameraStop>
+  <Fluffy.FollowMe.Cinematics.NoValidTargets>シネマティックカメラを停止しています。理由:有効な目標がない</Fluffy.FollowMe.Cinematics.NoValidTargets>
+
 </LanguageData>
