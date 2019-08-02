@@ -14,8 +14,9 @@ Can safely be enabled/disabled in ongoing saves.
  - AlexSchrod:	Screen edge & Camera jump detection
  - duduluu:	Chinese translations
  - Proxyer:	Japanese Translation
+ - Oleksii Bespalov:	Fix bug in settings persistance
+ - Jorge Martínez:	Spanish translations
  - Kroeze:	
- - Oleksii Bespalov:	
 
 # Think you found a bug? 
 Please read [this guide](http://steamcommunity.com/sharedfiles/filedetails/?id=725234314) before creating a bug report,
@@ -38,4 +39,4 @@ Show your appreciation by buying me a coffee (or contribute towards a nice singl
 [![I Have a Black Dog](https://i.ibb.co/ss59Rwy/New-Project-2.png)](https://www.youtube.com/watch?v=XiCrniLQGYc)
 
 # Version
-This is version 3.4.71, for RimWorld 1.0.2282.
+This is version 3.5.76, for RimWorld 1.0.2282.
