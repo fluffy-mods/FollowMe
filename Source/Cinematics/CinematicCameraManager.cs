@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 using Verse;
 
 namespace FollowMe
@@ -22,7 +22,7 @@ namespace FollowMe
 
             if ( !_patched )
             {
-                var harmonyInstance = HarmonyInstance.Create( "Fluffy.FollowMe" );
+                var harmonyInstance = new Harmony( "Fluffy.FollowMe" );
                 harmonyInstance.PatchAll( Assembly.GetExecutingAssembly() );
                 _patched = true;
             }

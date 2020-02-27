@@ -1,8 +1,6 @@
 ﻿// Mod.cs
 // Copyright Karel Kroeze, 2017-2017
 
-using System.Reflection;
-using Harmony;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;

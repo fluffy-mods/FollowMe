@@ -2,7 +2,7 @@
 // Copyright Karel Kroeze, 2019-2019
 
 using System.Collections.Generic;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;

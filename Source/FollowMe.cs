@@ -139,7 +139,7 @@ namespace FollowMe
             if ( Current.ProgramState != ProgramState.Playing )
                 return; // gamecomp is already active in the 'setup' stage, but follow me shouldnt be.
 
-            if ( Event.current.type   == EventType.mouseUp &&
+            if ( Event.current.type   == EventType.MouseUp &&
                  Event.current.button == 2 )
             {
                 // Get entry at mouse position - UI.MousePositionOnUIInverted handles;
