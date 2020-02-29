@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Manifest>
-  <version>3.5.76</version>
-  <manifestUri>https://cdn.jsdelivr.net/gh/FluffierThanThou/FollowMe/About/Manifest.xml</manifestUri>
-  <downloadUri>https://github.com/FluffierThanThou/FollowMe/releases/v3.5.76</downloadUri>
+  <version>4.1.78</version>
+  <manifestUri>https://raw.githubusercontent.com/fluffy-mods/FollowMe/1.1/About/Manifest.xml</manifestUri>
+  <downloadUri>https://github.com/fluffy-mods/FollowMe/releases/v4.1.78</downloadUri>
 </Manifest>

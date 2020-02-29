@@ -23,10 +23,22 @@ Jorge Martínez:    Spanish translations
 Kroeze:    
 
 &lt;size=24&gt;Version&lt;/size&gt;
-This is version 4.0.77, for RimWorld 1.1.2557.
+This is version 4.1.78, for RimWorld 1.1.2558.
 
 </description>
   <supportedVersions>
     <li>1.1</li>
   </supportedVersions>
+  <packageId>fluffy.followme</packageId>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
 </ModMetaData>
