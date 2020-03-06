@@ -18,7 +18,7 @@ namespace FollowMe
 
         public override string SettingsCategory()
         {
-            return "FollowMe".Translate();
+            return "Fluffy.FollowMe".Translate();
         }
 
         public override void DoSettingsWindowContents( Rect inRect )

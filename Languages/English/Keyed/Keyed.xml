@@ -4,6 +4,7 @@
 	<FollowMe.Cancel>No longer following {0}.</FollowMe.Cancel>
 	<FollowMe.Follow>Following {0}.</FollowMe.Follow>
 
+	<Fluffy.FollowMe>Follow Me!</Fluffy.FollowMe>
 	<FollowMe.RejectMultiple>Can not follow, multiple selections.</FollowMe.RejectMultiple>
 	<FollowMe.RejectNoSelection>Can not follow, nothing selected.</FollowMe.RejectNoSelection>
 	<FollowMe.RejectNotAThing>Can not follow, selection is not a thing.</FollowMe.RejectNotAThing>
