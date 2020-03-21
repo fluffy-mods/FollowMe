@@ -16,6 +16,7 @@ Can safely be enabled/disabled in ongoing saves.
  - Proxyer:	Japanese Translation
  - Oleksii Bespalov:	Fix bug in settings persistance
  - Jorge Martínez:	Spanish translations
+ - xProtosx:	Russian translation
  - Kroeze:	
 
 # Think you found a bug? 
@@ -39,4 +40,4 @@ Show your appreciation by buying me a coffee (or contribute towards a nice singl
 [![I Have a Black Dog](https://i.ibb.co/ss59Rwy/New-Project-2.png)](https://www.youtube.com/watch?v=XiCrniLQGYc)
 
 # Version
-This is version 4.3.80, for RimWorld 1.1.2565.
+This is version 4.4.81, for RimWorld 1.1.2579.
