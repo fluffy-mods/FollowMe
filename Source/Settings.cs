@@ -18,7 +18,7 @@ namespace FollowMe
         {
             get
             {
-                _followMeKey??=new KeyBind( "Fluffy.FollowMe.KeyBind".Translate(), KeyCode.Home );
+                _followMeKey??=new KeyBind( "Fluffy.FollowMe.KeyBinds.FollowMe".Translate(), KeyCode.Home );
                 return _followMeKey;
             }
         }
@@ -29,7 +29,7 @@ namespace FollowMe
         {
             get
             {
-                _cinematicCameraKey??= new KeyBind( "Fluffy.CinematicCamera.KeyBind".Translate(), KeyCode.End );
+                _cinematicCameraKey??= new KeyBind("Fluffy.FollowMe.KeyBinds.CinematicCamera".Translate(), KeyCode.End );
                 return _cinematicCameraKey;
             }
         }
@@ -54,7 +54,10 @@ namespace FollowMe
                                   "FollowMe.Sounds.Tooltip".Translate() );
             list.CheckboxLabeled( "FollowMe.EdgeDetection".Translate(), ref edgeDetection,
                                   "FollowMe.EdgeDetection.Tooltip".Translate() );
+            list.Gap();
+            list.Label( "Fluffy.FollowMe.KeyBinds".Translate() );
             FollowMeKey.Draw( list.GetRect( 30 ) );
+            CinematicCameraKey.Draw( list.GetRect( 30 ) );
             list.End();
         }
     }
