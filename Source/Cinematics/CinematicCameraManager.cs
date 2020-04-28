@@ -11,7 +11,6 @@ namespace FollowMe
     public class CinematicCameraManager : GameComponent
     {
         public static CinematicCamera currentCamera;
-        public static KeyBindingDef toggleCamera;
         private static bool _patched;
 
         public static List<CinematicCamera> Cameras => DefDatabase<CinematicCamera>.AllDefsListForReading;
@@ -36,7 +35,6 @@ namespace FollowMe
 
         public CinematicCameraManager( Game game )
         {
-            toggleCamera = KeyBindingDef.Named( "CinematicCamera" );
         }
 
         public static void Stop( string reason = null, bool stopFollow = true )
@@ -82,7 +80,7 @@ namespace FollowMe
         {
             base.GameComponentOnGUI();
 
-            if ( toggleCamera.KeyDownEvent )
+            if ( Settings.CinematicCameraKey.JustPressed )
                 CycleCameras();
         }
     }

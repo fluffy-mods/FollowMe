@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FollowMe!", "FollowMe.csproj", "{FAE5180C-6ADE-4E9F-BC22-BDC0407AFCC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FollowMe", "FollowMe.csproj", "{FAE5180C-6ADE-4E9F-BC22-BDC0407AFCC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterKeybinding", "..\..\..\TOOLS\BetterKeybinding\BetterKeybinding.csproj", "{7A074D05-578C-48C4-9A0E-1C289CF862E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{FAE5180C-6ADE-4E9F-BC22-BDC0407AFCC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAE5180C-6ADE-4E9F-BC22-BDC0407AFCC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAE5180C-6ADE-4E9F-BC22-BDC0407AFCC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A074D05-578C-48C4-9A0E-1C289CF862E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A074D05-578C-48C4-9A0E-1C289CF862E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A074D05-578C-48C4-9A0E-1C289CF862E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A074D05-578C-48C4-9A0E-1C289CF862E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FDDBE97-02B6-43A9-9A72-EBA2742550B9}
 	EndGlobalSection
 EndGlobal

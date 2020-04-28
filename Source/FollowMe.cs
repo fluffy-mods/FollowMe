@@ -37,8 +37,6 @@ namespace FollowMe
             KeyBindingDefOf.MapDolly_Left
         };
 
-        private readonly KeyBindingDef _followKey = KeyBindingDef.Named( "FollowSelected" );
-
         public FollowMe()
         {
             // scribe
@@ -139,6 +137,11 @@ namespace FollowMe
             if ( Current.ProgramState != ProgramState.Playing )
                 return; // gamecomp is already active in the 'setup' stage, but follow me shouldnt be.
 
+
+            // start/stop following thing on key press
+            if ( Settings.FollowMeKey.JustPressed )
+                TryStartFollow( Find.Selector.SingleSelectedObject as Thing );
+
             if ( Event.current.type   == EventType.MouseUp &&
                  Event.current.button == 2 )
             {
@@ -159,9 +162,6 @@ namespace FollowMe
 
         public override void GameComponentUpdate()
         {
-            // start/stop following thing on key press
-            if ( _followKey.KeyDownEvent )
-                TryStartFollow( Find.Selector.SingleSelectedObject as Thing );
 
             if ( !_enabled )
                 return;
