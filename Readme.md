@@ -17,7 +17,6 @@ Can safely be enabled/disabled in ongoing saves.
  - Oleksii Bespalov:	Fix bug in settings persistance
  - Jorge Martínez:	Spanish translations
  - xProtosx:	Russian translation
- - Kroeze:	'Release 3.5.76 [nolog]', 'Release v0.18.2.3 [nolog]', 'Release v0.18.2.2 [nolog]', [A13]  - initial release, version url, Initial release
 
 # Think you found a bug? 
 Please read [this guide](http://steamcommunity.com/sharedfiles/filedetails/?id=725234314) before creating a bug report,
@@ -40,4 +39,4 @@ Show your appreciation by buying me a coffee (or contribute towards a nice singl
 [![I Have a Black Dog](https://i.ibb.co/ss59Rwy/New-Project-2.png)](https://www.youtube.com/watch?v=XiCrniLQGYc)
 
 # Version
-This is version 4.6.92, for RimWorld 1.1.2624.
+This is version 4.7.93, for RimWorld 1.1.2624.
