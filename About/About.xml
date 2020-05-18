@@ -2,7 +2,7 @@
 <ModMetaData>
   <name>Follow Me</name>
   <author>Fluffy</author>
-  <url>https://ludeon.com/forums/index.php?topic=16120.0</url>
+  <url>https://ludeon.com/forums/index.php?topic=16120</url>
   <description>Gives the camera tracking capabilities. 
 
 &lt;size=24&gt;Features&lt;/size&gt;
@@ -24,7 +24,7 @@ xProtosx:    Russian translation
 Kroeze:    ‘Release 3.5.76 [nolog]’, ‘Release v0.18.2.3 [nolog]’, ‘Release v0.18.2.2 [nolog]’, [A13]  - initial release, version url, Initial release
 
 &lt;size=24&gt;Version&lt;/size&gt;
-This is version 4.5.90, for RimWorld 1.1.2610.
+This is version 4.6.92, for RimWorld 1.1.2624.
 
 </description>
   <supportedVersions>
