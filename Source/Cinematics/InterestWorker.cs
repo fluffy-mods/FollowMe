@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 // Cinematic.cs
 // Copyright Karel Kroeze, 2019-2019
 
@@ -89,6 +91,43 @@ namespace FollowMe {
             float interest = thing.GetStatValue( StatDefOf.MarketValue );
             if (thing.TryGetQuality(out QualityCategory quality)) {
                 interest *= (int) quality + 1;
+            }
+
+            return interest;
+        }
+    }
+
+    public class InterestWorker_RoyaltyWatch: InterestWorker {
+        public override ThingRequestGroup PotentiallyInteresting => ThingRequestGroup.Pawn;
+        private static float? _maxRelationImportance;
+        protected static float MaxRelationImportance => _maxRelationImportance ??= DefDatabase<PawnRelationDef>.AllDefsListForReading.Max(d => d.importance);
+
+        public override float InterestFor(Thing thing) {
+            if (!ModsConfig.RoyaltyActive) {
+                return 0;
+            }
+            if (thing is not Pawn pawn) {
+                return 0;
+            }
+
+            float interest = 0f;
+            if (pawn.royalty?.MainTitle() is RoyalTitleDef title) {
+                interest += title.favorCost;
+            }
+
+            List<DirectPawnRelation> affairs = pawn.GetLoveRelations(true);
+            foreach (DirectPawnRelation affair in affairs) {
+                if (affair.otherPawn.royalty?.MainTitle() is RoyalTitleDef otherTitle) {
+                    interest += otherTitle.favorCost / 2f;
+                }
+            }
+
+            IEnumerable<Pawn> family = pawn.relations.RelatedPawns;
+            foreach (Pawn relative in family) {
+                if (relative.royalty?.MainTitle() is RoyalTitleDef otherTitle) {
+                    PawnRelationDef relation = pawn.GetMostImportantRelation(relative);
+                    interest += relation.importance / MaxRelationImportance * otherTitle.favorCost / 3f;
+                }
             }
 
             return interest;

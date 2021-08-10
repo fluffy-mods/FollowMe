@@ -9,7 +9,7 @@
         <Product>FollowMe</Product>
         <Copyright>Copyright © 2015-2021</Copyright>
         <DebugType>portable</DebugType>
-        <LangVersion>8</LangVersion>
+        <LangVersion>9</LangVersion>
         <OutputPath>..\Assemblies\</OutputPath>
         <PostBuildEvent>mod update</PostBuildEvent>
     </PropertyGroup>

@@ -24,4 +24,11 @@
         <secondsOfFame>10~30</secondsOfFame>
     </FollowMe.CinematicCamera>
 
+    <FollowMe.CinematicCamera>
+        <defName>Camera_RoyaltyWatch</defName>
+        <label>royalty watch</label>
+        <description>Rich, famous and a god-given right to rule. Shows off their face, fashion and affairs.</description>
+        <interestWorkerType>FollowMe.InterestWorker_RoyaltyWatch</interestWorkerType>
+    </FollowMe.CinematicCamera>
+
 </Defs>
