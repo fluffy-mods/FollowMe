@@ -1,97 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FAE5180C-6ADE-4E9F-BC22-BDC0407AFCC9}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FollowMe_</RootNamespace>
-    <AssemblyName>FollowMe!</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\Assemblies\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\Assemblies\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.0.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Lib.Harmony.2.0.0.7\lib\net472\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Cinematics\CinematicCameraManager.cs" />
-    <Compile Include="Cinematics\InterestWorker.cs" />
-    <Compile Include="Cinematics\CinematicCamera.cs" />
-    <Compile Include="Cinematics\Patch_DoPlaySettingsGlobalControls.cs" />
-    <Compile Include="FollowMe.cs" />
-    <Compile Include="Mod.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources.cs" />
-    <Compile Include="Settings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\TOOLS\BetterKeybinding\BetterKeybinding.csproj">
-      <Project>{7A074D05-578C-48C4-9A0E-1C289CF862E1}</Project>
-      <Name>BetterKeybinding</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>mod update -x -n "Follow Me"</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>FollowMe_</RootNamespace>
+        <AssemblyName>FollowMe</AssemblyName>
+        <TargetFramework>net472</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AssemblyTitle>FollowMe</AssemblyTitle>
+        <Company>Fluffy</Company>
+        <Product>FollowMe</Product>
+        <Copyright>Copyright © 2015-2021</Copyright>
+        <DebugType>portable</DebugType>
+        <LangVersion>8</LangVersion>
+        <OutputPath>..\Assemblies\</OutputPath>
+        <PostBuildEvent>mod update</PostBuildEvent>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.3.3080" />
+        <PackageReference Include="Lib.Harmony" Version="2.1.1" ExcludeAssets="runtime" />
+        <ProjectReference Include="..\..\..\TOOLS\BetterKeybinding\BetterKeybinding.csproj" />
+    </ItemGroup>
 </Project>

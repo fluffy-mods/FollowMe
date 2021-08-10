@@ -1,4 +1,4 @@
-﻿// CinematicCameraManager.cs
+// CinematicCameraManager.cs
 // Copyright Karel Kroeze
 
 using System.Collections.Generic;
@@ -6,61 +6,53 @@ using System.Reflection;
 using HarmonyLib;
 using Verse;
 
-namespace FollowMe
-{
-    public class CinematicCameraManager : GameComponent
-    {
+namespace FollowMe {
+    public class CinematicCameraManager: GameComponent {
         public static CinematicCamera currentCamera;
         private static bool _patched;
 
         public static List<CinematicCamera> Cameras => DefDatabase<CinematicCamera>.AllDefsListForReading;
 
-        public override void FinalizeInit()
-        {
+        public override void FinalizeInit() {
             base.FinalizeInit();
 
-            if ( !_patched )
-            {
-                var harmonyInstance = new Harmony( "Fluffy.FollowMe" );
-                harmonyInstance.PatchAll( Assembly.GetExecutingAssembly() );
+            if (!_patched) {
+                Harmony harmonyInstance = new Harmony( "Fluffy.FollowMe" );
+                harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
                 _patched = true;
             }
         }
 
-        public override void LoadedGame()
-        {
+        public override void LoadedGame() {
             base.LoadedGame();
             Stop();
         }
 
-        public CinematicCameraManager( Game game )
-        {
+        public CinematicCameraManager(Game game) {
         }
 
-        public static void Stop( string reason = null, bool stopFollow = true )
-        {
-            if (stopFollow)
-                FollowMe.StopFollow( reason );
+        public static void Stop(string reason = null, bool stopFollow = true) {
+            if (stopFollow) {
+                FollowMe.StopFollow(reason);
+            }
+
             currentCamera?.Stop();
             currentCamera = null;
         }
 
-        public static void Start( CinematicCamera camera )
-        {
-            currentCamera?.Stop( false );
+        public static void Start(CinematicCamera camera) {
+            currentCamera?.Stop(false);
             currentCamera = camera;
             currentCamera.Start();
         }
 
-        public static void CycleCameras()
-        {
-            var curIndex = Cameras.IndexOf( currentCamera );
+        public static void CycleCameras() {
+            int curIndex = Cameras.IndexOf( currentCamera );
 
             // stop current
-            currentCamera?.Stop( false );
+            currentCamera?.Stop(false);
 
-            if ( curIndex == Cameras.Count - 1 )
-            {
+            if (curIndex == Cameras.Count - 1) {
                 currentCamera = null;
                 return;
             }
@@ -70,18 +62,17 @@ namespace FollowMe
             currentCamera?.Start();
         }
 
-        public override void GameComponentTick()
-        {
+        public override void GameComponentTick() {
             base.GameComponentTick();
             currentCamera?.Tick();
         }
 
-        public override void GameComponentOnGUI()
-        {
+        public override void GameComponentOnGUI() {
             base.GameComponentOnGUI();
 
-            if ( Settings.CinematicCameraKey.JustPressed )
+            if (Settings.CinematicCameraKey.JustPressed) {
                 CycleCameras();
+            }
         }
     }
 }
