@@ -5,7 +5,7 @@
     "url": "https://github.com/fluffy-mods/FollowMe",
     "version": {
         "major": 5,
-        "minor": 0,
+        "minor": 1,
         "build": 103
     },
     "author": {
@@ -28,6 +28,15 @@
         }
     ],
     "changelog": [
+        {
+            "date": "2021-08-10T21:44:19.000Z",
+            "message": "update preview image",
+            "author": {
+                "name": "Fluffy",
+                "email": "fluffy.l2032@gmail.com"
+            },
+            "hash": "36e6e97adcc7d2a23a91a4145617ce0588b64258"
+        },
         {
             "date": "2021-08-10T20:36:05.000Z",
             "message": "add 'Royalty Watch' camera",
