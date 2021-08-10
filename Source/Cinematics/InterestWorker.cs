@@ -21,7 +21,7 @@ namespace FollowMe {
         public override ThingRequestGroup PotentiallyInteresting => ThingRequestGroup.Pawn;
 
         public override float InterestFor(Thing thing) {
-            if (!(thing is Pawn pawn)) {
+            if (thing is not Pawn pawn) {
                 return 0;
             }
 
@@ -48,7 +48,7 @@ namespace FollowMe {
         public override ThingRequestGroup PotentiallyInteresting => ThingRequestGroup.Pawn;
 
         public override float InterestFor(Thing thing) {
-            if (!(thing is Pawn pawn)) {
+            if (thing is not Pawn pawn) {
                 return 0f;
             }
 

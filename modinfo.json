@@ -6,7 +6,7 @@
     "version": {
         "major": 5,
         "minor": 0,
-        "build": 102
+        "build": 103
     },
     "author": {
         "name": "Fluffy",
@@ -29,6 +29,15 @@
     ],
     "changelog": [
         {
+            "date": "2021-08-10T20:36:05.000Z",
+            "message": "add 'Royalty Watch' camera",
+            "author": {
+                "name": "Fluffy",
+                "email": "fluffy.l2032@gmail.com"
+            },
+            "hash": "843b972ebf9e3f47907b1215918ab2261ebab6da"
+        },
+        {
             "date": "2021-08-10T20:01:29.000Z",
             "message": "initial 1.3 update",
             "author": {
@@ -42,42 +51,47 @@
         {
             "hash": "3a95353696bbf0f8871dae25236dce73b56dab17",
             "author": "Proxyer",
-            "description": "Update Japanese Translation for 4.8.94 (#34)"
+            "description": "Update Japanese Translation for 4.8.94 (#34)",
+            "suppressed": true
         },
         {
             "hash": "65c00256d5ca21cb24332ddc034caed474d61cdd",
             "author": "Proxyer",
-            "description": "Pull request: Update Japanese Translation for v4.5.90 (#29)"
+            "description": "Russian translation",
+            "suppressed": true
         },
         {
             "hash": "0f8f7b14acc0fcf908f06663203c624b48015b56",
             "author": "xProtosx",
-            "description": "Add Russian Language (#27)"
+            "description": "Russian translation"
         },
         {
             "hash": "17d5289f3ddc9f176bf5bb3aed9ff216655d54f7",
             "author": "Proxyer",
-            "description": "Update Japanese Translation for v3.4.71 (#24)"
+            "description": "Update Japanese Translation for v3.4.71 (#24)",
+            "suppressed": true
         },
         {
             "hash": "4e32b0339be6a6cd3d5b9a61d5b2c163f9b0b640",
             "author": "Jorge Martínez",
-            "description": "Added Spanish and Latin Spanish translations (#25)"
+            "description": "Spanish translations"
         },
         {
             "hash": "eef73a68aba956d4d219dd060b50a2bf4c8c8871",
             "author": "Oleksii Bespalov",
-            "description": "save settings"
+            "description": "Fix settings saving"
         },
         {
             "hash": "722c71a7f1d30606cd66e44d9600b3af5ac8b446",
             "author": "Kroeze",
-            "description": "'Release v0.18.2.2 [nolog]'"
+            "description": "'Release v0.18.2.2 [nolog]'",
+            "suppressed": true
         },
         {
             "hash": "bda44d8b034d76ae0eb1efc7a1c16401ee75c0ed",
             "author": "Proxyer",
-            "description": "Update Japanese translation"
+            "description": "Update Japanese translation",
+            "suppressed": true
         },
         {
             "hash": "6e9507f262b6e37d9b070fa1ce8e35f79eb3bbd2",
@@ -87,71 +101,58 @@
         {
             "hash": "75a5a6f01ef5bcde0da2f93574f1897fcfa064ba",
             "author": "duduluu",
-            "description": "Add Chinese translations (#9)"
+            "description": "Chinese translation"
         }
     ],
     "contributors": {
-        "Proxyer": [
-            {
-                "hash": "3a95353",
-                "author": "Proxyer",
-                "description": "Update Japanese Translation for 4.8.94 (#34)"
-            },
-            {
-                "hash": "65c0025",
-                "author": "Proxyer",
-                "description": "Pull request: Update Japanese Translation for v4.5.90 (#29)"
-            },
-            {
-                "hash": "17d5289",
-                "author": "Proxyer",
-                "description": "Update Japanese Translation for v3.4.71 (#24)"
-            },
-            {
-                "hash": "bda44d8",
-                "author": "Proxyer",
-                "description": "Update Japanese translation"
-            },
-            {
-                "hash": "6e9507f",
-                "author": "Proxyer",
-                "description": "Japanese Translation"
-            }
-        ],
         "xProtosx": [
             {
                 "hash": "0f8f7b1",
                 "author": "xProtosx",
-                "description": "Add Russian Language (#27)"
+                "description": "Russian translation"
             }
         ],
         "Jorge Martínez": [
             {
                 "hash": "4e32b03",
                 "author": "Jorge Martínez",
-                "description": "Added Spanish and Latin Spanish translations (#25)"
+                "description": "Spanish translations"
             }
         ],
         "Oleksii Bespalov": [
             {
                 "hash": "eef73a6",
                 "author": "Oleksii Bespalov",
-                "description": "save settings"
+                "description": "Fix settings saving"
             }
         ],
-        "Kroeze": [
+        "Proxyer": [
             {
-                "hash": "722c71a",
-                "author": "Kroeze",
-                "description": "'Release v0.18.2.2 [nolog]'"
+                "hash": "6e9507f",
+                "author": "Proxyer",
+                "description": "Japanese Translation"
             }
         ],
         "duduluu": [
             {
                 "hash": "75a5a6f",
                 "author": "duduluu",
-                "description": "Add Chinese translations (#9)"
+                "description": "Chinese translation"
             }
         ]
-    }
+    },
+    "attributions": [
+        {
+            "description": "preview video camera icon",
+            "author": "Freepik",
+            "license": "BY-NC",
+            "url": "https://www.freepik.com/"
+        },
+        {
+            "description": "preview flat pin icon",
+            "author": "Freepik",
+            "license": "BY-NC",
+            "url": "https://freepik.com/"
+        }
+    ]
 }
