@@ -5,8 +5,8 @@
     "url": "https://github.com/fluffy-mods/FollowMe",
     "version": {
         "major": 5,
-        "minor": 1,
-        "build": 103
+        "minor": 2,
+        "build": 104
     },
     "author": {
         "name": "Fluffy",
@@ -28,6 +28,15 @@
         }
     ],
     "changelog": [
+        {
+            "date": "2021-08-11T08:21:19.000Z",
+            "message": "Update Japanese translation",
+            "author": {
+                "name": "Proxyer",
+                "email": "proxyer666@gmail.com"
+            },
+            "hash": "ef561447aea17c4d44879c335e80f0d194a1ba53"
+        },
         {
             "date": "2021-08-10T21:44:19.000Z",
             "message": "update preview image",
@@ -111,6 +120,12 @@
             "hash": "75a5a6f01ef5bcde0da2f93574f1897fcfa064ba",
             "author": "duduluu",
             "description": "Chinese translation"
+        },
+        {
+            "hash": "ef561447aea17c4d44879c335e80f0d194a1ba53",
+            "author": "Proxyer",
+            "description": "Update Japanese translation",
+            "suppressed": true
         }
     ],
     "contributors": {
