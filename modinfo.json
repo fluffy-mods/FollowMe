@@ -5,8 +5,8 @@
     "url": "https://github.com/fluffy-mods/FollowMe",
     "version": {
         "major": 5,
-        "minor": 2,
-        "build": 104
+        "minor": 3,
+        "build": 105
     },
     "author": {
         "name": "Fluffy",
@@ -28,6 +28,15 @@
         }
     ],
     "changelog": [
+        {
+            "date": "2021-08-13T08:11:44.000Z",
+            "message": "French translation",
+            "author": {
+                "name": "stiphendor",
+                "email": "82418064+stiphendor@users.noreply.github.com"
+            },
+            "hash": "fe47a2799cc47a94e4780f16753f4d72a3d68036"
+        },
         {
             "date": "2021-08-11T08:21:19.000Z",
             "message": "Update Japanese translation",
@@ -114,7 +123,7 @@
         {
             "hash": "6e9507f262b6e37d9b070fa1ce8e35f79eb3bbd2",
             "author": "Proxyer",
-            "description": "Japanese Translation"
+            "description": "Japanese translation"
         },
         {
             "hash": "75a5a6f01ef5bcde0da2f93574f1897fcfa064ba",
@@ -126,6 +135,11 @@
             "author": "Proxyer",
             "description": "Update Japanese translation",
             "suppressed": true
+        },
+        {
+            "hash": "fe47a2799cc47a94e4780f16753f4d72a3d68036",
+            "author": "stiphendor",
+            "description": "French translation"
         }
     ],
     "contributors": {
@@ -154,7 +168,7 @@
             {
                 "hash": "6e9507f",
                 "author": "Proxyer",
-                "description": "Japanese Translation"
+                "description": "Japanese translation"
             }
         ],
         "duduluu": [
@@ -162,6 +176,13 @@
                 "hash": "75a5a6f",
                 "author": "duduluu",
                 "description": "Chinese translation"
+            }
+        ],
+        "stiphendor": [
+            {
+                "hash": "fe47a27",
+                "author": "stiphendor",
+                "description": "French translation"
             }
         ]
     },

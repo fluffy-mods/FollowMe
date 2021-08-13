@@ -17,7 +17,7 @@ namespace FollowMe {
             base.FinalizeInit();
 
             if (!_patched) {
-                Harmony harmonyInstance = new Harmony( "Fluffy.FollowMe" );
+                Harmony harmonyInstance = new( "Fluffy.FollowMe" );
                 harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
                 _patched = true;
             }

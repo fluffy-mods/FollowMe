@@ -9,8 +9,9 @@ Can safely be enabled/disabled in ongoing saves.
 xProtosx: [Russian translation](https://github.com/fluffy-mods/FollowMe/commit/0f8f7b1)
 Jorge Martínez: [Spanish translations](https://github.com/fluffy-mods/FollowMe/commit/4e32b03)
 Oleksii Bespalov: [Fix settings saving](https://github.com/fluffy-mods/FollowMe/commit/eef73a6)
-Proxyer: [Japanese Translation](https://github.com/fluffy-mods/FollowMe/commit/6e9507f)
+Proxyer: [Japanese translation](https://github.com/fluffy-mods/FollowMe/commit/6e9507f)
 duduluu: [Chinese translation](https://github.com/fluffy-mods/FollowMe/commit/75a5a6f)
+stiphendor: [French translation](https://github.com/fluffy-mods/FollowMe/commit/fe47a27)
 
 
 ![Think you found a bug?](https://banners.karel-kroeze.nl/title/Think%20you%20found%20a%20bug%3F.png)  
