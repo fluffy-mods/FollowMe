@@ -70,8 +70,9 @@ namespace FollowMe {
             Thing target = targets.MaxBy( t => Worker.InterestFor( t ) * CooldownFactor( t ) );
 
             Subject = target;
-            _ticksOfFame = Rand.Range(GenTicks.TicksPerRealSecond * secondsOfFame.min,
-                                       GenTicks.TicksPerRealSecond * secondsOfFame.max);
+            _ticksOfFame = Rand.RangeSeeded(GenTicks.TicksPerRealSecond * secondsOfFame.min,
+                                            GenTicks.TicksPerRealSecond * secondsOfFame.max,
+                                            GenTicks.TicksGame);
         }
 
         public virtual float CooldownFactor(Thing thing) {
