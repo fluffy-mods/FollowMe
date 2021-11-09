@@ -72,7 +72,7 @@ namespace FollowMe {
             Subject = target;
             _ticksOfFame = Rand.RangeSeeded(GenTicks.TicksPerRealSecond * secondsOfFame.min,
                                             GenTicks.TicksPerRealSecond * secondsOfFame.max,
-                                            GenTicks.TicksGame);
+                                            GenTicks.TicksAbs);
         }
 
         public virtual float CooldownFactor(Thing thing) {
