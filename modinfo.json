@@ -6,7 +6,7 @@
     "version": {
         "major": 5,
         "minor": 3,
-        "build": 106
+        "build": 107
     },
     "author": {
         "name": "Fluffy",
@@ -28,6 +28,15 @@
         }
     ],
     "changelog": [
+        {
+            "date": "2022-02-26T16:07:40.000Z",
+            "message": "Update description",
+            "author": {
+                "name": "Fluffy",
+                "email": "fluffy.l2032@gmail.com"
+            },
+            "hash": "275f7352906e83be3f0fc0ec95b0b647ea9b03ee"
+        },
         {
             "date": "2021-08-13T08:11:44.000Z",
             "message": "French translation",
