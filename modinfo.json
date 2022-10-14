@@ -5,7 +5,7 @@
     "url": "https://github.com/fluffy-mods/FollowMe",
     "version": {
         "major": 5,
-        "minor": 3,
+        "minor": 4,
         "build": 108
     },
     "author": {
@@ -28,6 +28,15 @@
         }
     ],
     "changelog": [
+        {
+            "date": "2022-10-14T21:13:37.000Z",
+            "message": "initial 1.4 build",
+            "author": {
+                "name": "Fluffy",
+                "email": "fluffy.l2032@gmail.com"
+            },
+            "hash": "aa9190e9244fde7be9e06e1fa4d46a158a79a136"
+        },
         {
             "date": "2022-02-26T16:07:40.000Z",
             "message": "Update description",
