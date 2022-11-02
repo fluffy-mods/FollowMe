@@ -5,8 +5,8 @@
     "url": "https://github.com/fluffy-mods/FollowMe",
     "version": {
         "major": 5,
-        "minor": 4,
-        "build": 108
+        "minor": 5,
+        "build": 109
     },
     "author": {
         "name": "Fluffy",
@@ -29,10 +29,19 @@
     ],
     "changelog": [
         {
+            "date": "2022-10-14T21:13:56.000Z",
+            "message": "release v5.4.108",
+            "author": {
+                "name": "FluffierThanThou",
+                "email": "fluffy.l2032@gmail.com"
+            },
+            "hash": "fa3639b66b69f950f8b87d8f76788bd72b35ad92"
+        },
+        {
             "date": "2022-10-14T21:13:37.000Z",
             "message": "initial 1.4 build",
             "author": {
-                "name": "Fluffy",
+                "name": "FluffierThanThou",
                 "email": "fluffy.l2032@gmail.com"
             },
             "hash": "aa9190e9244fde7be9e06e1fa4d46a158a79a136"
@@ -45,6 +54,33 @@
                 "email": "fluffy.l2032@gmail.com"
             },
             "hash": "275f7352906e83be3f0fc0ec95b0b647ea9b03ee"
+        },
+        {
+            "date": "2022-01-24T11:06:24.000Z",
+            "message": "Add files via upload",
+            "author": {
+                "name": "Ragnar-F",
+                "email": "1332321+Ragnar-F@users.noreply.github.com"
+            },
+            "hash": "337730f1a0dd18c7b658b334aa23940848adb9c5"
+        },
+        {
+            "date": "2022-01-24T11:05:42.000Z",
+            "message": "Update Keyed.xml",
+            "author": {
+                "name": "Ragnar-F",
+                "email": "1332321+Ragnar-F@users.noreply.github.com"
+            },
+            "hash": "b94fb25d623037b8c1cc61aea5b07b924c3e6001"
+        },
+        {
+            "date": "2022-01-24T11:04:17.000Z",
+            "message": "Rename Languages/German/Keyed.xml to Languages/German/Keyed/Keyed.xml",
+            "author": {
+                "name": "Ragnar-F",
+                "email": "1332321+Ragnar-F@users.noreply.github.com"
+            },
+            "hash": "69de14f6384f3c9bf11aad15377e3c22c6a18500"
         },
         {
             "date": "2021-08-13T08:11:44.000Z",
@@ -158,6 +194,23 @@
             "hash": "fe47a2799cc47a94e4780f16753f4d72a3d68036",
             "author": "stiphendor",
             "description": "French translation"
+        },
+        {
+            "hash": "337730f1a0dd18c7b658b334aa23940848adb9c5",
+            "author": "Ragnar-F",
+            "description": "Add files via upload",
+            "suppressed": true
+        },
+        {
+            "hash": "b94fb25d623037b8c1cc61aea5b07b924c3e6001",
+            "author": "Ragnar-F",
+            "description": "Update Keyed.xml",
+            "suppressed": true
+        },
+        {
+            "hash": "69de14f6384f3c9bf11aad15377e3c22c6a18500",
+            "author": "Ragnar-F",
+            "description": "German translation"
         }
     ],
     "contributors": {
@@ -201,6 +254,13 @@
                 "hash": "fe47a27",
                 "author": "stiphendor",
                 "description": "French translation"
+            }
+        ],
+        "Ragnar-F": [
+            {
+                "hash": "69de14f",
+                "author": "Ragnar-F",
+                "description": "German translation"
             }
         ]
     },
